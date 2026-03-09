@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SÁT HẠCH MÁY THI CÔNG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .option-input:checked + label {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen text-slate-900 pb-24">
+
+    <!-- Header -->
+    <header class="bg-blue-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-2xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div>
+                <h1 class="text-[10px] font-medium opacity-80 uppercase leading-tight">Trường CĐ Cơ Điện Xây Dựng và Nông Nghiệp Nam Bộ</h1>
+                <h2 class="text-sm md:text-lg font-bold uppercase tracking-tight">Khoa Máy Thi Công</h2>
+            </div>
+            <div id="timer" class="hidden bg-red-600 px-3 py-1 rounded-lg font-mono font-bold text-lg animate-pulse">20:00</div>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-4 py-8">
+        <!-- ĐĂNG NHẬP -->
+        <section id="auth-view" class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-black text-gray-800 uppercase">Thông Tin Thí Sinh</h3>
+            </div>
+            
+            <div class="space-y-4">
+                <input type="text" id="name" placeholder="HỌ VÀ TÊN" class="w-full p-4 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none font-bold uppercase transition-all">
+                <input type="text" id="class" placeholder="LỚP / KHÓA" class="w-full p-4 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none font-bold uppercase transition-all">
+                <button onclick="startExam()" class="w-full bg-blue-700 hover:bg-blue-800 text-white py-4 rounded-xl font-bold text-lg transition-all transform active:scale-95 shadow-lg uppercase">Vào Thi Ngay</button>
+            </div>
+        </section>
+
+        <!-- LÀM BÀI -->
+        <section id="exam-view" class="hidden space-y-6">
+            <div id="question-container"></div>
+            
+            <!-- Navbar Bottom -->
+            <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t p-4 shadow-2xl z-40">
+                <div class="max-w-2xl mx-auto flex justify-between items-center">
+                    <p id="progress" class="font-bold text-blue-700 uppercase text-xs">Tiến độ: 0/30</p>
+                    <button onclick="submitExam()" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold uppercase hover:bg-black transition-all shadow-md">Nộp Bài</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- KẾT QUẢ -->
+        <section id="result-view" class="hidden">
+            <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 text-center mb-8">
+                <div id="result-icon" class="text-6xl mb-4"></div>
+                <h2 id="result-status" class="text-2xl font-black mb-1 uppercase"></h2>
+                <p id="result-detail" class="text-gray-500 font-bold mb-6 text-sm"></p>
+                <div class="text-5xl font-black text-blue-700 mb-8" id="final-score">0/30</div>
+                <button onclick="location.reload()" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg font-bold uppercase text-sm">Thoát</button>
+            </div>
+            <div id="review-container" class="space-y-4"></div>
+        </section>
+    </main>
+
+    <script>
+        // Dữ liệu câu hỏi mẫu
+        const DATA = [
+            { q: "Khoảng cách an toàn tối thiểu từ xe nâng đến mép hố là bao nhiêu?", a: ["0.5 mét", "Bằng chiều sâu hố", "1.5 mét", "3 mét"], c: 1, e: "Để đảm bảo ổn định nền đất, khoảng cách an toàn phải ít nhất bằng chiều sâu của hố." },
+            { q: "Khi di chuyển xe nâng không tải trên đường bằng, càng nâng nên để cao bao nhiêu?", a: ["10-20 cm", "Sát mặt đất", "50 cm", "Tùy ý"], c: 0, e: "Độ cao 10-20cm giúp tránh va chạm vật cản mặt đất nhưng không làm mất trọng tâm." },
+            { q: "Thao tác nào đúng khi xe nâng bị nghiêng sắp lật?", a: ["Nhảy ra ngoài", "Bám chặt vô lăng, đạp chân trụ", "Cố gắng giữ xe", "Tắt máy ngay"], c: 1, e: "Trong cabin bảo vệ, bám chặt vô lăng là cách an toàn nhất tránh bị xe đè." },
+            { q: "Biển báo hình tròn viền đỏ, nền trắng có ý nghĩa gì?", a: ["Cấm", "Nguy hiểm", "Chỉ dẫn", "Hiệu lệnh"], c: 0, e: "Biển tròn viền đỏ thường là các loại biển báo cấm." },
+            { q: "Xilanh nâng hạ thuộc hệ thống nào của máy thi công?", a: ["Hệ thống lái", "Hệ thống truyền lực", "Hệ thống thủy lực", "Hệ thống phanh"], c: 2, e: "Các cơ cấu nâng hạ chủ yếu hoạt động bằng áp suất dầu thủy lực." }
+        ];
+
+        let currentQuestions = [];
+        let userAnswers = {};
+        let timeLeft = 20 * 60;
+        let timer;
+
+        function startExam() {
+            const name = document.getElementById('name').value;
+            const cls = document.getElementById('class').value;
+            if(!name || !cls) return alert("Vui lòng nhập đầy đủ thông tin!");
+
+            currentQuestions = [...DATA].sort(() => Math.random() - 0.5);
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('exam-view').classList.remove('hidden');
+            document.getElementById('timer').classList.remove('hidden');
+            
+            renderQuestions();
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if(timeLeft <= 0) submitExam();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('question-container');
+            container.innerHTML = currentQuestions.map((item, i) => `
+                <div class="bg-white p-6 rounded-2xl shadow-sm border mb-6">
+                    <div class="flex gap-3 mb-4">
+                        <span class="bg-blue-600 text-white w-7 h-7 rounded flex items-center justify-center font-bold shrink-0 text-sm">${i+1}</span>
+                        <h4 class="font-bold text-gray-800 text-sm leading-relaxed">${item.q}</h4>
+                    </div>
+                    <div class="grid gap-3">
+                        ${item.a.map((opt, j) => `
+                            <div class="relative">
+                                <input type="radio" name="q${i}" id="q${i}o${j}" class="option-input hidden" onchange="selectOption(${i}, ${j})">
+                                <label for="q${i}o${j}" class="block p-3 border-2 border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 transition-all font-medium text-gray-600 text-sm">
+                                    ${opt}
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectOption(qIdx, aIdx) {
+            userAnswers[qIdx] = aIdx;
+            document.getElementById('progress').innerText = `Tiến độ: ${Object.keys(userAnswers).length}/${currentQuestions.length}`;
+        }
+
+        function submitExam() {
+            if(timeLeft > 0 && !confirm("Bạn muốn nộp bài sát hạch?")) return;
+            clearInterval(timer);
+
+            let score = 0;
+            currentQuestions.forEach((q, i) => {
+                if(userAnswers[i] === q.c) score++;
+            });
+
+            document.getElementById('exam-view').classList.add('hidden');
+            document.getElementById('timer').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+
+            const pass = score >= (currentQuestions.length * 0.8);
+            document.getElementById('result-status').innerText = pass ? "KẾT QUẢ: ĐẠT" : "KẾT QUẢ: KHÔNG ĐẠT";
+            document.getElementById('result-status').style.color = pass ? "#10b981" : "#ef4444";
+            document.getElementById('result-icon').innerText = pass ? "🥇" : "⚠️";
+            document.getElementById('final-score').innerText = `${score}/${currentQuestions.length}`;
+            
+            showReview();
+        }
+
+        function showReview() {
+            const container = document.getElementById('review-container');
+            container.innerHTML = currentQuestions.map((item, i) => {
+                const userChoice = userAnswers[i];
+                const isCorrect = userChoice === item.c;
+                return `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 ${isCorrect ? 'border-emerald-500' : 'border-red-500'}">
+                        <p class="font-bold text-gray-800 text-sm mb-3">${i+1}. ${item.q}</p>
+                        <div class="space-y-2">
+                            ${item.a.map((opt, j) => {
+                                let style = "border-gray-50 text-gray-400";
+                                if(j === item.c) style = "border-emerald-200 bg-emerald-50 text-emerald-700 font-bold";
+                                else if(j === userChoice) style = "border-red-200 bg-red-50 text-red-700 font-bold";
+                                return `<div class="p-2 border rounded-lg text-xs ${style}">${j === item.c ? '✓ ' : (j === userChoice ? '✕ ' : '')}${opt}</div>`;
+                            }).join('')}
+                        </div>
+                        <div class="mt-3 p-3 bg-blue-50 rounded-lg text-[11px] text-blue-800">
+                            <b>Giải thích:</b> ${item.e}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

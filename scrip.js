@@ -4,18 +4,19 @@ async function submitQuiz() {
 
     selectedQuestions.forEach((q, i) => {
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        // Kiểm tra đúng tên cột "Đáp án đúng" trong file của thầy
         if (selected && selected.value === q["Đáp án đúng"]) {
             score++;
         }
     });
 
     const status = score >= 24 ? "ĐẠT" : "KHÔNG ĐẠT";
+    
+    // ĐÃ SỬA: Tên biến phải khớp 100% với file Apps Script của thầy
     const payload = {
-        name: document.getElementById('studentName').value,
-        id: document.getElementById('studentID').value,
+        name: document.getElementById('studentName').value, // Kiểm tra lại ID này có đúng trong HTML không
+        className: document.getElementById('studentID').value, // Đổi 'id' thành 'className' để khớp Apps Script
         score: score + "/30",
-        status: status
+        result: status // Đổi 'status' thành 'result' để khớp Apps Script
     };
 
     document.getElementById('quiz-screen').innerHTML = `
@@ -25,10 +26,10 @@ async function submitQuiz() {
         </div>`;
 
     try {
-        // Cấu hình fetch chuẩn để gửi dữ liệu cho Google Script
-        await fetch(https://script.google.com/macros/s/AKfycbxSZgEC-oNqO513UvYv_3bvQWkjtMELucG3JWBevyWtcwJoDn6VbH-271TOk42X5oGL/exec, {
+        // ĐÃ SỬA: Thêm dấu ngoặc kép bao quanh link
+        await fetch("https://script.google.com/macros/s/AKfycbwg75d-6OFif2t-bnwgZNgijiN_PUi-_xSxOM9fHHvvM6N9Ymr1yfTVtoZiVaqUwZNh/exec", {
             method: "POST",
-            mode: "no-cors", // Thêm dòng này để tránh lỗi chặn gửi dữ liệu
+            mode: "no-cors", 
             headers: {
                 "Content-Type": "application/json",
             },

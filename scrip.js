@@ -1,71 +1,73 @@
-// 1. Cấu hình
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxGySySYeE0wsg-41K5lTQUYgL_beTxmCGagDfwQO1AUxLs_l8K4iGMgz-jKE9sxc/exec";
+// 1. Cấu hình - Link Web App từ Google Sheets của bạn
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRe6p2BHUlBsFM95U-3OCXx4CvmJ0-An25SMnTLhcsAUJhy4RBkNNUEZEwLsp8mx72/exec";
 
 let allQuestions = [];
 let selectedQuestions = [];
-let userAnswers = {}; // Lưu trữ đáp án học viên chọn
-let currentIdx = 0;   // Chỉ số câu hỏi hiện tại
-let timeLeft = 1200; 
+let userAnswers = {}; 
+let currentQuestionIndex = 0; 
+let timeLeft = 1200; // 20 phút
 let timerInterval;
 
-// 2. Hàm bắt đầu thi
+// 2. Hàm Bắt đầu thi
 async function startQuiz() {
     const name = document.getElementById('studentName').value.trim();
     const id = document.getElementById('studentID').value.trim();
 
     if (!name || !id) {
-        alert("Thầy nhắc học viên nhập đủ Họ tên và Mã số nhé!");
+        alert("Vui lòng nhập đủ Họ tên và Khóa!");
         return;
     }
 
-    document.getElementById('start-screen').innerHTML = `
-        <div class="card-body text-center">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">Đang lấy đề thi từ hệ thống CAEE...</p>
-        </div>`;
+    // Hiệu ứng chờ tải đề
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    // Hiển thị tên học viên lên góc phải nếu có chỗ
+    const displayUser = document.querySelector('.HOCVIEN_NAME');
+    if(displayUser) displayUser.innerText = name;
 
     try {
         const response = await fetch(WEB_APP_URL);
         allQuestions = await response.json();
+        
+        // Lấy ngẫu nhiên 30 câu từ ngân hàng
         selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 30);
 
-        document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('quiz-screen').style.display = 'block';
-
-        showQuestion(0); // Hiển thị câu đầu tiên
+        renderSitemap(); // Vẽ sơ đồ câu hỏi bên phải
+        showQuestion(0);
         startTimer();
     } catch (error) {
-        alert("Lỗi kết nối! Thầy kiểm tra lại link Web App hoặc quyền chia sẻ nhé.");
+        alert("Lỗi kết nối hệ thống CAEE! Vui lòng kiểm tra Internet.");
         location.reload();
     }
 }
 
-// 3. Hàm hiển thị TỪNG câu hỏi (Thay thế renderQuestions cũ)
+// 3. Hàm hiển thị câu hỏi (Chỉ hiện từng câu một)
 function showQuestion(index) {
-    currentIdx = index;
+    currentQuestionIndex = index;
     const q = selectedQuestions[index];
     const container = document.getElementById('quiz-content');
     
-    const imageHtml = q["HINHANH"] ? `<div class="text-center"><img src="${q["HINHANH"]}" class="img-fluid rounded border mb-3 shadow-sm" style="max-height:250px;"></div>` : "";
+    const imageHtml = q["HINHANH"] ? `<div class="text-center mb-3"><img src="${q["HINHANH"]}" class="img-fluid rounded border shadow-sm" style="max-height:250px;"></div>` : "";
     
-    // Kiểm tra đáp án đã chọn trước đó để tích lại
-    const getChecked = (opt) => userAnswers[index] === opt ? "checked" : "";
+    // Kiểm tra xem đã chọn đáp án chưa để tích lại
+    const isSelected = (opt) => userAnswers[index] === opt ? "checked" : "";
 
     container.innerHTML = `
-        <div class="question-box p-4 bg-white rounded shadow-sm">
-            <div class="d-flex justify-content-between mb-3 border-bottom pb-2">
-                <span class="badge bg-primary px-3 py-2">Câu ${index + 1} / 30</span>
+        <div class="question-page p-3 bg-white rounded shadow-sm fade-in">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-primary px-3 py-2">Câu hỏi ${index + 1} / 30</span>
                 <span class="text-muted small">Mã đề: CAEE-2026</span>
             </div>
             
-            <h5 class="text-dark mb-4">${q["Nội dung câu hỏi"]}</h5>
+            <h5 class="mb-4 text-dark font-weight-bold">${q["Nội dung câu hỏi"]}</h5>
             ${imageHtml}
             
-            <div class="options-group">
+            <div class="options-list mt-3">
                 ${['A', 'B', 'C', 'D'].map(opt => `
-                    <div class="form-check mb-3 p-2 border rounded ${userAnswers[index] === opt ? 'bg-light border-primary' : ''}">
+                    <div class="form-check mb-3 p-2 border rounded hover-shadow ${userAnswers[index] === opt ? 'bg-blue-50 border-primary' : ''}">
                         <input class="form-check-input ms-1" type="radio" name="quizOption" id="opt${opt}" value="${opt}" 
-                            ${getChecked(opt)} onchange="saveAnswer(${index}, '${opt}')">
+                            ${isSelected(opt)} 
+                            onclick="saveAnswerOnly(${index}, '${opt}')"> 
                         <label class="form-check-label w-100 ps-4 cursor-pointer" for="opt${opt}">
                             <strong>${opt}.</strong> ${q["Đáp án " + opt]}
                         </label>
@@ -73,53 +75,78 @@ function showQuestion(index) {
                 `).join('')}
             </div>
 
-            <div class="navigation-buttons d-flex justify-content-between mt-4 border-top pt-3">
+            <div class="navigation-btns d-flex justify-content-between mt-5">
                 <button class="btn btn-outline-secondary px-4" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>
-                    <i class="fas fa-chevron-left"></i> Câu trước
+                    <i class="fas fa-arrow-left"></i> TRƯỚC
                 </button>
                 
                 ${index === 29 ? 
-                    `<button class="btn btn-success px-4" onclick="confirmSubmit()">NỘP BÀI <i class="fas fa-paper-plane"></i></button>` : 
-                    `<button class="btn btn-primary px-4" onclick="nextQuestion()">Câu tiếp <i class="fas fa-chevron-right"></i></button>`
+                    `<button class="btn btn-danger px-4" onclick="confirmSubmit()">NỘP BÀI</button>` : 
+                    `<button class="btn btn-primary px-4" onclick="nextQuestion()">TIẾP THEO <i class="fas fa-arrow-right"></i></button>`
                 }
             </div>
-        </div>`;
+        </div>
+    `;
+    updateActiveGrid(index);
 }
 
-// 4. Lưu đáp án (CHỈ LƯU - TUYỆT ĐỐI KHÔNG CHUYỂN CÂU)
-function saveAnswer(index, value) {
+// 4. Hàm lưu đáp án (Đã bỏ tự động chuyển câu)
+function saveAnswerOnly(index, value) {
     userAnswers[index] = value;
-    // Thầy lưu ý: Chỗ này không gọi hàm showQuestion nữa nên máy sẽ đứng im tại chỗ.
+    // Cập nhật màu xanh cho sơ đồ câu hỏi ngay khi chọn
+    const gridItem = document.getElementById(`grid-item-${index}`);
+    if (gridItem) gridItem.classList.add('answered');
 }
 
 function nextQuestion() {
-    if (currentIdx < 29) showQuestion(currentIdx + 1);
+    if (currentQuestionIndex < 29) showQuestion(currentQuestionIndex + 1);
 }
 
 function prevQuestion() {
-    if (currentIdx > 0) showQuestion(currentIdx - 1);
+    if (currentQuestionIndex > 0) showQuestion(currentQuestionIndex - 1);
 }
 
-// 5. Đồng hồ & Gửi kết quả
+// 5. Sơ đồ câu hỏi bên phải
+function renderSitemap() {
+    const grid = document.getElementById('questionGrid'); // Đảm bảo HTML có ID này
+    if(!grid) return;
+    grid.innerHTML = '';
+    for(let i=0; i<30; i++) {
+        const item = document.createElement('div');
+        item.id = `grid-item-${i}`;
+        item.className = 'q-grid-item'; // Class CSS thầy đã có
+        item.innerText = i + 1;
+        item.onclick = () => showQuestion(i);
+        grid.appendChild(item);
+    }
+}
+
+function updateActiveGrid(index) {
+    document.querySelectorAll('.q-grid-item').forEach(el => el.classList.remove('active'));
+    const current = document.getElementById(`grid-item-${index}`);
+    if(current) current.classList.add('active');
+}
+
+// 6. Đồng hồ & Nộp bài
 function startTimer() {
     timerInterval = setInterval(() => {
         timeLeft--;
         let min = Math.floor(timeLeft / 60);
         let sec = timeLeft % 60;
-        document.getElementById('timer').innerText = `Thời gian còn lại: ${min}:${sec < 10 ? '0' : ''}${sec}`;
+        const timerEl = document.getElementById('timer');
+        if(timerEl) timerEl.innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
         if (timeLeft <= 0) submitQuiz();
     }, 1000);
 }
 
 function confirmSubmit() {
-    const answered = Object.keys(userAnswers).length;
-    if(confirm(`Bạn đã làm ${answered}/30 câu. Chắc chắn muốn nộp bài?`)) submitQuiz();
+    const count = Object.keys(userAnswers).length;
+    if (confirm(`Bạn đã làm ${count}/30 câu. Bạn chắc chắn muốn nộp bài?`)) submitQuiz();
 }
 
 async function submitQuiz() {
     clearInterval(timerInterval);
     let score = 0;
-
     selectedQuestions.forEach((q, i) => {
         if (userAnswers[i] === q["Đáp án đúng"]) score++;
     });
@@ -127,26 +154,23 @@ async function submitQuiz() {
     const status = score >= 24 ? "ĐẠT" : "KHÔNG ĐẠT";
     const payload = {
         name: document.getElementById('studentName').value,
-        id: document.getElementById('studentID').value,
+        className: document.getElementById('studentID').value, // Khớp với Apps Script
         score: score,
-        status: status
+        result: status
     };
 
-    document.getElementById('quiz-screen').innerHTML = `
-        <div class="text-center p-5">
-            <div class="spinner-grow text-success" role="status"></div>
-            <h3>Đang gửi kết quả về bảng điểm CAEE...</h3>
-        </div>`;
+    document.getElementById('quiz-screen').innerHTML = `<div class="text-center p-5"><h4>Hệ thống đang lưu điểm của bạn...</h4></div>`;
 
     try {
-        await fetch(WEB_APP_URL, {
-            method: "POST",
+        await fetch(WEB_APP_URL, { 
+            method: "POST", 
             mode: "no-cors",
-            body: JSON.stringify(payload)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload) 
         });
-        alert(`Chúc mừng! Bạn đúng ${score}/30 câu. Kết quả: ${status}`);
+        alert(`KẾT QUẢ: ${score}/30 câu - ${status}`);
     } catch (e) {
-        alert("Lỗi mạng! Thầy nhắc học viên chụp màn hình kết quả này!");
+        alert("Lỗi mạng! Bạn hãy chụp màn hình kết quả này và báo cho thầy Hoàn.");
     }
     location.reload();
 }

@@ -418,10 +418,25 @@
             document.getElementById('resultTitle').className = `text-2xl font-black mb-1 ${isPassed ? 'text-green-600' : 'text-red-600'}`;
             document.getElementById('resultScore').innerText = `${score}/30`;
             document.getElementById('resultDetails').innerHTML = `
-                <p><b>Học viên:</b> ${document.getElementById('studentName').innerText}</p>
-                <p><b>Kết quả:</b> ${isPassed ? 'Chúc mừng bạn đã vượt qua!' : 'Bạn cần cố gắng hơn lần sau.'}</p>
-            `;
-        }
-    </script>
-</body>
+               // 1. CHỈ DÁN LINK VÀO ĐÂY
+            const scriptURL = 'DÁN_LINK_WEB_APP_CỦA_BẠN_VÀO_ĐÂY'; 
+            
+            try {
+                await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    // 2. GIỮ NGUYÊN ĐOẠN DƯỚI NÀY - KHÔNG DÁN LINK VÀO ĐÂY
+                    body: JSON.stringify({
+                        name: studentName,
+                        className: currentStudentClass,
+                        score: score,
+                        result: resultStatus
+                    })
+                });
+                console.log("Đã gửi điểm thành công!");
+            } catch (error) {
+                console.error("Lỗi gửi điểm:", error);
+            }
 </html>

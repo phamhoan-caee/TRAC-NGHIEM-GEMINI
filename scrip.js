@@ -1,5 +1,5 @@
 // 1. Cấu hình - Thay link Web App của thầy vào đây
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzGog-9OvIuYHEKgQXE4SsVbhrqJrQhvN_B2CJQjICCXmRcsJmGvGEhAuuY52rDNhuE/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxGySySYeE0wsg-41K5lTQUYgL_beTxmCGagDfwQO1AUxLs_l8K4iGMgz-jKE9sxc/exec";
 
 let allQuestions = [];
 let selectedQuestions = [];

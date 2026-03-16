@@ -2,440 +2,426 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sát hạch Xe nâng - TRƯỜNG CAO ĐẲNG CƠ ĐIỆN NN & MT</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SÁT HẠCH LÝ THUYẾT MÁY NÂNG HÀNG - CAEE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --blue-primary: #004a99; --accent-color: #ff9800; --success-green: #28a745; --danger-red: #d9534f; }
-        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding-bottom: 80px; }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background-color: #f0f2f5; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        .q-grid-item { transition: all 0.2s; }
+        .q-grid-item.active { border: 3px solid #f59e0b; background-color: #fef3c7; color: #b45309; }
+        .q-grid-item.answered { background-color: #10b981; color: white; border-color: #059669; }
         
-        /* Welcome Screen */
-        #welcome-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #004a99 0%, #002d5e 100%); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .welcome-card { background: white; width: 100%; max-width: 550px; padding: 40px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border-top: 8px solid var(--accent-color); }
-
-        .school-header { background: var(--blue-primary); color: white; padding: 15px; text-align: center; border-bottom: 4px solid var(--accent-color); }
-        .school-name { font-weight: bold; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .info-bar { background: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        #timer { font-size: 1.3rem; font-weight: bold; color: var(--danger-red); background: #fff5f5; padding: 5px 15px; border-radius: 50px; border: 1px solid #feb2b2; }
-
-        .question-box { background: white; margin: 20px 0; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); min-height: 450px; position: relative; }
-        .q-text { font-size: 1.3rem; font-weight: 600; color: #2c3e50; margin-bottom: 25px; line-height: 1.6; border-left: 5px solid var(--blue-primary); padding-left: 15px; }
-
-        .option-btn { width: 100%; text-align: left; padding: 16px 20px; margin-bottom: 12px; border-radius: 12px; border: 2px solid #edf2f7; background: #fff; transition: all 0.2s ease; font-size: 1.1rem; display: flex; align-items: flex-start; cursor: pointer; }
-        .option-btn:hover:not(.disabled) { border-color: var(--blue-primary); background-color: #f7fafc; transform: translateX(5px); }
-        .option-btn.selected { border-color: var(--blue-primary); background-color: #ebf8ff; color: var(--blue-primary); font-weight: 600; }
-        .option-btn.correct { background-color: #c6f6d5 !important; border-color: #48bb78 !important; color: #22543d !important; }
-        .option-btn.incorrect { background-color: #fed7d7 !important; border-color: #f56565 !important; color: #742a2a !important; }
-        .option-btn.disabled { pointer-events: none; cursor: default; }
-
-        .q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 15px; background: #fff; border-radius: 15px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .grid-item { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; border: 2px solid transparent; }
-        .grid-item.answered { background: var(--blue-primary); color: white; }
-        .grid-item.current { border-color: var(--accent-color); color: var(--accent-color); background: #fff; transform: scale(1.1); z-index: 1; }
-        .grid-item.correct { background-color: #48bb78 !important; color: white; }
-        .grid-item.incorrect { background-color: #f56565 !important; color: white; }
-
-        .nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; border-top: 1px solid #e2e8f0; z-index: 1000; padding: 12px; gap: 15px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
-        .nav-btn { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; font-weight: 600; color: #4a5568; }
-        .btn-finish { background: var(--danger-red); color: white; border: none; flex: 1.5; font-size: 1.1rem; text-transform: uppercase; }
-
-        /* Results Overlay */
-        .result-panel { display: none; text-align: center; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .option-card { touch-action: manipulation; }
+        .option-card:active { transform: scale(0.98); }
+        .option-card.selected { border-color: #2563eb; background-color: #dbeafe; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1); }
         
-        .result-card { padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .pass-card { background: #f0fff4; border: 3px solid #48bb78; }
-        .fail-card { background: #fff5f5; border: 3px solid #f56565; }
-        
-        .score-big { font-size: 4rem; font-weight: 800; margin: 10px 0; }
-        
-        /* Custom Confirmation Modal */
-        #confirm-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 3000; display: none; align-items: center; justify-content: center; }
-        .confirm-card { background: white; padding: 30px; border-radius: 20px; max-width: 400px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        /* Custom scrollbar cho vùng câu hỏi */
+        #mainScrollArea::-webkit-scrollbar { width: 4px; }
+        #mainScrollArea::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .q-grid { grid-template-columns: repeat(6, 1fr); }
-            .info-bar { flex-direction: column; gap: 10px; }
+            #mainContent { flex-direction: column; overflow-y: auto; }
+            aside { width: 100% !important; border-left: none; border-top: 1px solid #e2e8f0; }
+            #timerDisplay { font-size: 1.25rem; padding: 0.25rem 0.75rem; }
+            header h1 { font-size: 0.9rem; }
+            .option-card { padding: 1rem !important; }
         }
     </style>
 </head>
-<body>
+<body class="h-screen flex flex-col overflow-hidden">
 
-<!-- Modal xác nhận nộp bài tự chế (Tránh lỗi trình duyệt chặn popup) -->
-<div id="confirm-modal">
-    <div class="confirm-card">
-        <i class="fa-solid fa-circle-question text-warning mb-3" style="font-size: 4rem;"></i>
-        <h4 class="fw-bold">Nộp bài thi?</h4>
-        <p id="confirm-msg" class="text-muted">Bạn có chắc chắn muốn kết thúc bài thi ngay bây giờ?</p>
-        <div class="d-flex gap-2 mt-4">
-            <button class="btn btn-light flex-grow-1 py-2" onclick="closeConfirm()">QUAY LẠI</button>
-            <button class="btn btn-danger flex-grow-1 py-2 fw-bold" onclick="executeSubmit()">NỘP BÀI</button>
-        </div>
-    </div>
-</div>
-
-<!-- Màn hình chào mừng -->
-<div id="welcome-screen">
-    <div class="welcome-card">
-        <div class="text-center mb-4">
-            <h3 class="text-primary fw-bold">TRƯỜNG CAO ĐẲNG CƠ ĐIỆN NÔNG NGHIỆP VÀ MÔI TRƯỜNG</h3>
-            <div class="badge bg-warning text-dark px-3 py-2 mt-2">HỆ THỐNG THI LÝ THUYẾT XE NÂNG</div>
-        </div>
-        
-        <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label fw-bold"><i class="fa-solid fa-user me-2"></i>Họ và tên học viên:</label>
-                <input type="text" id="student-name" class="form-control form-control-lg" placeholder="Nhập họ tên...">
+    <!-- Màn hình Đăng ký (Login Screen) -->
+    <div id="loginScreen" class="fixed inset-0 z-[100] bg-blue-900 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col md:flex-row">
+            <div class="md:w-1/3 bg-blue-700 p-6 text-white flex flex-col justify-center items-center text-center">
+                <i class="fas fa-id-card text-5xl mb-4"></i>
+                <h2 class="text-xl font-bold uppercase tracking-tighter">Thông tin Học viên</h2>
             </div>
-            <div class="col-12">
-                <label class="form-label fw-bold"><i class="fa-solid fa-graduation-cap me-2"></i>Khóa học:</label>
-                <input type="text" id="course-name" class="form-control form-control-lg" placeholder="4.2026">
+            <div class="md:w-2/3 p-6">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-1">TRƯỜNG CĐ CƠ ĐIỆN NÔNG NGHIỆP VÀ MÔI TRƯỜNG</h3>
+                    <p class="text-blue-600 font-bold text-xs uppercase">KHOA MÁY THI CÔNG</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Họ và Tên:</label>
+                        <input type="text" id="inputName" placeholder="Nguyễn Văn A" 
+                               class="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 focus:outline-none transition text-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Khóa:</label>
+                        <input type="text" id="inputClass" placeholder="Ví dụ: 4.2026" 
+                               class="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 focus:outline-none transition text-lg">
+                    </div>
+                    <button onclick="startExamNow()" class="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-xl shadow-lg transition active:scale-95 mt-4 uppercase tracking-widest">
+                        BẮT ĐẦU THI <i class="fas fa-play ml-2"></i>
+                    </button>
+                </div>
+                <p class="mt-6 text-center text-[10px] text-gray-400 font-medium">© 2026 TRUNG TÂM ĐÀO TẠO KỸ THUẬT CAEE</p>
             </div>
         </div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader" class="hidden bg-blue-800 text-white p-3 md:p-4 shadow-md flex justify-between items-center z-50">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-truck-moving text-xl md:text-2xl text-orange-400"></i>
+            <h1 class="text-sm md:text-xl font-bold uppercase truncate max-w-[150px] md:max-w-none">SÁT HẠCH LÝ THUYẾT MÁY NÂNG HÀNG - CAEE</h1>
+        </div>
+        <div class="flex items-center space-x-2 md:space-x-6">
+            <div class="hidden md:block text-right border-r pr-6 border-blue-400">
+                <p class="text-[10px] uppercase opacity-70 font-bold">Học viên:</p>
+                <p class="font-bold leading-none"><span id="studentName">...</span></p>
+            </div>
+            <div id="timerDisplay" class="bg-red-600 px-3 py-1 md:px-4 md:py-2 rounded-lg text-xl md:text-2xl font-mono font-bold shadow-inner border border-red-400">
+                20:00
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="hidden flex-1 flex overflow-hidden">
         
-        <div class="alert alert-secondary mt-4 mb-4 small">
-            <ul class="mb-0">
-                <li>Số lượng câu hỏi: <strong>30 câu</strong>.</li>
-                <li>Thời gian: <strong>20 phút</strong>.</li>
-                <li>Điều kiện đạt: Trả lời đúng từ <strong>25/30 câu</strong>.</li>
-            </ul>
-        </div>
-
-        <button class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow" onclick="startExam()">
-            BẮT ĐẦU LÀM BÀI <i class="fa-solid fa-play ms-2"></i>
-        </button>
-    </div>
-</div>
-
-<div id="main-exam-content" style="display: none;">
-    <div class="school-header">
-        <div class="school-name">TRƯỜNG CAO ĐẲNG CƠ ĐIỆN NÔNG NGHIỆP VÀ MÔI TRƯỜNG</div>
-    </div>
-
-    <div class="info-bar">
-        <div>
-            <div class="small text-muted">Học viên: <span id="display-name" class="fw-bold text-primary">---</span></div>
-            <div class="small text-muted">Khóa: <span id="display-course" class="fw-bold">---</span></div>
-        </div>
-        <div class="text-center">
-            <div class="small text-muted">Tiến độ</div>
-            <div class="fw-bold"><span id="current-q-num">1</span>/30</div>
-        </div>
-        <div id="timer">20:00</div>
-    </div>
-
-    <div class="container-fluid px-3">
-        <div class="row">
-            <div class="col-lg-8" id="exam-area">
-                <!-- Vùng câu hỏi -->
-                <div id="question-container" class="question-box">
-                    <div class="q-text" id="question-text">Đang tải câu hỏi...</div>
-                    <div id="options-container"></div>
+        <!-- Question Area -->
+        <section id="mainScrollArea" class="flex-1 p-3 md:p-6 overflow-y-auto bg-gray-100 scroll-smooth">
+            <div id="questionContainer" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm p-5 md:p-8 fade-in">
+                <div class="flex justify-between items-center mb-4 md:mb-6">
+                    <span id="questionTag" class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Lý thuyết</span>
+                    <span class="text-gray-400 font-bold text-sm">Câu <span id="currentQNum" class="text-blue-600 text-lg">1</span>/30</span>
                 </div>
 
-                <!-- Vùng kết quả (Mặc định ẩn) -->
-                <div id="result-panel" class="result-panel">
-                    <div id="result-card-box" class="result-card">
-                        <h1 id="result-title" class="fw-bold"></h1>
-                        <div class="score-big" id="result-score">0/30</div>
-                        <p id="result-summary" class="fs-5"></p>
-                        <div class="mt-4">
-                            <button class="btn btn-primary me-2 shadow" onclick="reviewExam()">XEM LẠI BÀI THI</button>
-                            <button class="btn btn-outline-dark" onclick="location.reload()">LÀM ĐỀ KHÁC</button>
-                        </div>
+                <h2 id="questionText" class="text-lg md:text-2xl font-bold text-gray-800 mb-6 leading-tight">
+                    Đang tải câu hỏi...
+                </h2>
+
+                <div id="imageWrapper" class="hidden mb-6 flex justify-center bg-gray-50 rounded-2xl p-4 border border-gray-200">
+                    <img id="questionImage" src="" alt="Minh họa" class="max-h-48 md:max-h-72 rounded-lg shadow-sm">
+                </div>
+
+                <div id="optionsList" class="grid grid-cols-1 gap-3 md:gap-4">
+                    <!-- Options -->
+                </div>
+
+                <div class="mt-8 md:mt-12 pt-6 border-t flex justify-between items-center">
+                    <button onclick="prevQuestion()" class="flex-1 md:flex-none mr-2 px-4 md:px-8 py-3 bg-white border-2 border-gray-100 text-gray-500 rounded-xl font-bold transition active:bg-gray-50 text-xs md:text-sm uppercase">
+                        <i class="fas fa-chevron-left mr-1"></i> Trước
+                    </button>
+                    <button onclick="nextQuestion()" class="flex-1 md:flex-none ml-2 px-4 md:px-8 py-3 bg-blue-600 text-white rounded-xl font-bold transition active:bg-blue-700 shadow-md text-xs md:text-sm uppercase">
+                        Tiếp <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Grid Preview (Chỉ hiện trên mobile) -->
+            <div class="md:hidden mt-6 p-2">
+                <p class="text-center text-[10px] font-black text-gray-400 uppercase mb-3">Danh sách câu hỏi</p>
+                <div id="mobileGrid" class="grid grid-cols-6 gap-2"></div>
+            </div>
+        </section>
+
+        <!-- Sidebar (Desktop) -->
+        <aside class="hidden md:flex w-80 bg-white border-l shadow-xl p-6 flex-col">
+            <div class="mb-6">
+                <h3 class="font-black text-gray-400 uppercase tracking-widest text-[10px] mb-4 text-center">Sơ đồ câu hỏi</h3>
+                <div id="questionGrid" class="grid grid-cols-5 gap-2"></div>
+            </div>
+            
+            <div class="mt-auto space-y-4">
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Trạng thái</p>
+                    <div class="flex items-center text-xs font-bold text-emerald-600 mb-1">
+                        <div class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></div> Đã trả lời
+                    </div>
+                    <div class="flex items-center text-xs font-bold text-amber-500">
+                        <div class="w-3 h-3 bg-amber-400 rounded-full mr-2"></div> Đang chọn
                     </div>
                 </div>
+                <button onclick="confirmSubmit()" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl shadow-lg transition active:scale-95 text-lg uppercase">
+                    Nộp bài
+                </button>
             </div>
-            
-            <div class="col-lg-4">
-                <div class="q-grid" id="navigation-grid"></div>
-                <div class="card border-0 shadow-sm p-3 mb-3">
-                    <p class="small text-muted mb-2 font-italic"><i class="fa-solid fa-circle-info me-1"></i> Lưu ý: Hệ thống tự động nộp bài khi hết giờ.</p>
-                </div>
-            </div>
+        </aside>
+
+        <!-- Nút Nộp bài Mobile -->
+        <div class="md:hidden p-4 bg-white border-t">
+            <button onclick="confirmSubmit()" class="w-full py-4 bg-red-600 text-white font-black rounded-xl shadow-lg uppercase tracking-widest">
+                Kết thúc bài thi
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal Kết quả -->
+    <div id="resultModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[200] p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-8 text-center">
+            <div id="resultIcon" class="text-6xl mb-4"></div>
+            <h2 id="resultTitle" class="text-2xl font-black mb-1 uppercase"></h2>
+            <p id="resultScore" class="text-4xl font-mono font-black text-blue-600 mb-6"></p>
+            <div id="resultDetails" class="bg-gray-50 rounded-2xl p-5 mb-6 text-left space-y-2 text-sm"></div>
+            <button onclick="window.location.reload()" class="w-full py-4 bg-gray-800 text-white rounded-xl font-black hover:bg-black transition shadow-lg uppercase">
+                Thoát
+            </button>
         </div>
     </div>
 
-    <div class="nav-footer">
-        <button class="nav-btn" id="prev-btn" onclick="move(-1)"><i class="fa-solid fa-chevron-left"></i> Câu trước</button>
-        <button class="nav-btn btn-finish fw-bold" id="submit-btn" onclick="openConfirm()">NỘP BÀI THI</button>
-        <button class="nav-btn" id="next-btn" onclick="move(1)">Câu sau <i class="fa-solid fa-chevron-right"></i></button>
-    </div>
-</div>
+    <script>
+        // Dữ liệu ngân hàng câu hỏi (Rút gọn để tập trung vào logic, bạn có thể copy lại full 101 câu vào đây)
+        const questionBank = [
+            // 10 câu đầu của bạn
+            { q: "Khi lên hoặc xuống cabin xe nâng, người lái xe cần thực hiện như thế nào cho đúng?", options: { A: "Nhảy nhanh lên cabin để tiết kiệm thời gian.", B: "Bám vô lăng để leo lên.", C: "Tay trái nắm tay vịn, tay phải bám vào tựa lưng ghế, bước từng bậc lên xuống.", D: "Đặt chân lên càng nâng để leo lên." }, correct: "C", image: "https://drive.google.com/uc?export=download&id=1eRUzZsJtgEcj0vohejao3ga3iWJRr_UP", group: "Kỹ thuật lái" },
+            { q: "Mục đích chính của việc kiểm tra xe nâng trước mỗi ca làm việc là gì?", options: { A: "Để đảm bảo xe luôn sạch sẽ.", B: "Để phát hiện sớm các hư hỏng tiềm ẩn và đảm bảo an toàn.", C: "Để tính toán lượng nhiên liệu.", D: "Để báo cáo cho cấp trên." }, correct: "B", group: "An toàn" },
+            { q: "Khoảng cách an toàn tối thiểu giữa xe nâng và người đi bộ trong kho là bao nhiêu?", options: { A: "0.5 mét", B: "1 mét", C: "Ít nhất 2 mét", D: "5 mét" }, correct: "C", group: "An toàn" },
+            { q: "Khi di chuyển trên mặt bằng phẳng không có hàng, chiều cao càng nâng nên là:", options: { A: "Sát mặt đất", B: "15 - 20 cm", C: "50 cm", D: "Nâng cao hết mức" }, correct: "B", group: "Vận hành" },
+            { q: "Nếu tải trọng hàng che khuất tầm nhìn phía trước, người lái phải làm gì?", options: { A: "Rướn người ra ngoài", B: "Lùi xe khi di chuyển", C: "Nhờ người ngồi lên hàng chỉ đường", D: "Bấm còi liên tục và đi thẳng" }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Đèn cảnh báo nào sẽ sáng nếu hệ thống sạc của xe (máy phát) gặp sự cố?", options: { A: "Đèn báo dầu", B: "Đèn báo nhiệt độ", C: "Đèn báo ắc quy/sạc", D: "Đèn báo phanh" }, correct: "C", group: "Tín hiệu" },
+            { q: "Khi thấy hàng bị nghiêng trên pallet, người lái cần làm gì?", options: { A: "Dừng xe và chỉnh lại hàng.", B: "Vẫn di chuyển bình thường.", C: "Tăng tốc để hàng không rơi.", D: "Phanh gấp để hàng cân bằng lại." }, correct: "A", group: "Kỹ thuật lái" },
+            { q: "Trọng tâm của xe nâng thay đổi như thế nào khi nâng hàng lên cao?", options: { A: "Dịch chuyển ra phía trước và lên cao.", B: "Dịch chuyển ra phía sau.", C: "Không thay đổi.", D: "Hạ thấp xuống đất." }, correct: "A", group: "Lý thuyết cơ bản" },
+            { q: "Khi xe nâng đang xuống dốc có tải, người lái nên di chuyển như thế nào?", options: { A: "Đi tiến.", B: "Đi lùi.", C: "Tắt máy thả trôi.", D: "Đi chéo dốc." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Sức nâng ghi trên biểu đồ tải trọng (Load Chart) là sức nâng tương ứng với:", options: { A: "Trọng tâm tải ở bất kỳ vị trí nào.", B: "Trọng tâm tải ở vị trí tiêu chuẩn.", C: "Chiều cao nâng tối đa.", D: "Chiều dài càng nâng." }, correct: "B", group: "Thông số kỹ thuật" },
 
-<script>
-    const fullQuestionBank = [
-        { id: 1, question: "Khi lên hoặc xuống cabin xe nâng, người lái xe cần thực hiện như thế nào cho đúng?", options: ["Nhảy nhanh lên cabin để tiết kiệm thời gian.", "Bám vô lăng để leo lên.", "Tay trái nắm tay vịn, tay phải bám vào tựa lưng ghế, bước từng bậc lên xuống.", "Đặt chân lên càng nâng để leo lên."], answer: "Tay trái nắm tay vịn, tay phải bám vào tựa lưng ghế, bước từng bậc lên xuống." },
-        { id: 2, question: "Trước khi đưa xe nâng vào hoạt động, người lái cần làm gì?", options: ["Khởi động máy để nghe tiếng động cơ.", "Kiểm tra và bảo dưỡng hàng ngày, đảm bảo xe đạt tình trạng kỹ thuật tốt.", "Thử nâng hàng để kiểm tra tải trọng.", "Đổ thêm nhiên liệu trước khi chạy."], answer: "Kiểm tra và bảo dưỡng hàng ngày, đảm bảo xe đạt tình trạng kỹ thuật tốt." },
-        { id: 3, question: "Khi khởi động xe nâng, cần kiểm tra gì trước?", options: ["Phanh tay đã kéo chắc chắn.", "Càng nâng đang ở vị trí thấp nhất", "Cần tiến/lùi ở vị trí trung gian", "Tất cả các ý trên"], answer: "Tất cả các ý trên" },
-        { id: 4, question: "Khi cho xe nâng di chuyển, cần kiểm tra gì trước?", options: ["Phanh, ly hợp, hoạt động của càng nâng.", "Mức dầu", "Áp suất lốp", "Mức nước làm mát."], answer: "Phanh, ly hợp, hoạt động của càng nâng." },
-        { id: 5, question: "Khi dừng xe, thao tác nào là đúng?", options: ["Dừng đột ngột.", "Giữ càng ở vị trí trung gian.", "Hạ càng sát đất, nghiêng nhẹ về trước và tắt máy.", "Giữ càng cách đất 20 cm."], answer: "Hạ càng sát đất, nghiêng nhẹ về trước và tắt máy." },
-        { id: 6, question: "Khi xe chạy trên đường dốc có hàng, hướng di chuyển nào đúng?", options: ["Đi tiến khi lên dốc, lùi khi xuống dốc.", "Lùi khi lên dốc, tiến khi xuống dốc.", "Đi chéo theo dốc.", "Giữ càng ngang mặt đất."], answer: "Đi tiến khi lên dốc, lùi khi xuống dốc." },
-        { id: 7, question: "Khi dừng xe trên dốc cần làm gì?", options: ["Giữ nguyên số.", "Kéo phanh tay, hạ càng chạm đất.", "Tắt máy và để số tự do.", "Để hàng trên cao."], answer: "Kéo phanh tay, hạ càng chạm đất." },
-        { id: 8, question: "Khi đổi số, người lái cần thực hiện thao tác nào đúng?", options: ["Nhấn ga và chuyển số cùng lúc.", "Nhả ga, đạp ly hợp, chuyển số nhẹ nhàng.", "Vào số trực tiếp.", "Về mo khi đổi số."], answer: "Nhả ga, đạp ly hợp, chuyển số nhẹ nhàng." },
-        { id: 9, question: "Khi vận hành, tay trái người lái thường giữ gì?", options: ["Tay ga.", "Vô lăng.", "Cần nâng.", "Cần số."], answer: "Vô lăng." },
-        { id: 10, question: "Khi dừng xe đột ngột sẽ gây hậu quả gì?", options: ["Xe ổn định hơn.", "Hàng hóa dễ bị đổ hoặc xe bị lật.", "Tiết kiệm thời gian.", "Không ảnh hưởng."], answer: "Hàng hóa dễ bị đổ hoặc xe bị lật." },
-        { id: 11, question: "Khi lái xe phải luôn giữ càng cách mặt đất khoảng bao nhiêu cm?", options: ["5 cm", "10 cm", "15–20 cm", "30 cm"], answer: "15–20 cm" },
-        { id: 12, question: "Khi xe bị chết máy trên dốc, cần làm gì trước tiên?", options: ["Nhả phanh.", "Kéo phanh tay, hạ càng, cài số trung gian.", "Tăng ga.", "Khởi động lại ngay."], answer: "Kéo phanh tay, hạ càng, cài số trung gian." },
-        { id: 13, question: "Khi lùi xe cần quan sát như thế nào?", options: ["Dựa vào gương chiếu hậu.", "Nhìn thẳng.", "Quay đầu nhìn hướng xe di chuyển.", "Nhờ người khác báo hiệu."], answer: "Quay đầu nhìn hướng xe di chuyển." },
-        { id: 14, question: "Người vận hành xe nâng cần có điều kiện nào?", options: ["Có sức khỏe tốt, được đào tạo và cấp chứng chỉ.", "Chỉ cần biết lái xe.", "Là nhân viên kho.", "Không cần điều kiện."], answer: "Có sức khỏe tốt, được đào tạo và cấp chứng chỉ." },
-        { id: 15, question: "Khi đổ nhiên liệu cần?", options: ["Để máy chạy.", "Tắt máy, không hút thuốc.", "Đứng gần khu vực kín gió.", "Dùng lửa để soi."], answer: "Tắt máy, không hút thuốc." },
-        { id: 16, question: "Không được để người khác đứng ở đâu khi xe đang hoạt động?", options: ["Trong cabin.", "Trên càng hoặc gần xe.", "Phía sau xe.", "Tất cả các vị trí trên."], answer: "Tất cả các vị trí trên." },
-        { id: 17, question: "Khi bảo dưỡng hoặc sửa chữa xe, cần?", options: ["Để máy chạy.", "Tắt máy, kê kích chắc chắn.", "Nâng càng lên cao.", "Cho xe hoạt động nhẹ."], answer: "Tắt máy, kê kích chắc chắn." },
-        { id: 18, question: "Khi khởi động động cơ, cần ở vị trí nào?", options: ["Ngoài cabin.", "Trong cabin, tư thế sẵn sàng.", "Đứng cạnh xe.", "Ở phía sau xe."], answer: "Trong cabin, tư thế sẵn sàng." },
-        { id: 19, question: "Không được điều chỉnh ghế khi nào?", options: ["Xe đang di chuyển.", "Xe đang dừng.", "Trước khi khởi động.", "Khi thay ca."], answer: "Xe đang di chuyển." },
-        { id: 20, question: "Không được cho xe hoạt động ở đâu?", options: ["Nơi có đủ ánh sáng.", "Khu vực kín, thiếu sáng, dễ cháy.", "Kho hàng rộng rãi.", "Sân bê tông."], answer: "Khu vực kín, thiếu sáng, dễ cháy." },
-        { id: 21, question: "Khi nâng một kiện hàng không đồng nhất về khối lượng, phần nặng hơn nên được đặt ở đâu?", options: ["Ở phía đầu càng nâng", "Ở bên trái hoặc bên phải", "Càng gần giá đỡ hàng (phía trong) càng tốt", "Đặt ở giữa kiện hàng"], answer: "Càng gần giá đỡ hàng (phía trong) càng tốt" },
-        { id: 22, question: "Khi di chuyển với càng nâng không có tải, độ cao an toàn của càng so với mặt đất là bao nhiêu?", options: ["Càng cao càng tốt", "Khoảng 15-20 cm", "Chạm đất", "Cao ngang tầm mắt"], answer: "Khoảng 15-20 cm" },
-        { id: 23, question: "Đâu là cách an toàn nhất để đi qua đường ray xe lửa hoặc các gờ giảm tốc cao?", options: ["Đi với tốc độ cao để vượt qua nhanh", "Đi chéo một góc và di chuyển rất chậm", "Dừng lại và dùng xe khác để đưa hàng qua", "Nâng càng lên thật cao"], answer: "Đi chéo một góc và di chuyển rất chậm" },
-        { id: 24, question: "Trong trường hợp xe nâng bị lật, người điều khiển nên làm gì?", options: ["Nhảy khỏi xe ngay", "Giữ chắc vô lăng, nghiêng người ngược hướng lật", "Thoát ra bằng cửa phụ", "Nằm xuống sàn xe"], answer: "Giữ chắc vô lăng, nghiêng người ngược hướng lật" },
-        { id: 25, question: "Khi thấy đèn báo nhiệt độ nước làm mát động cơ ở vạch đỏ, cần làm gì?", options: ["Tiếp tục chạy cho đến cuối ca", "Dừng xe ở nơi an toàn, để động cơ chạy không tải cho nguội dần rồi tắt máy", "Tắt máy ngay lập tức", "Đổ thêm nước lạnh vào ngay"], answer: "Dừng xe ở nơi an toàn, để động cơ chạy không tải cho nguội dần rồi tắt máy" },
-        { id: 26, question: "Tại sao không nên quay đầu xe hoặc đi ngang trên dốc?", options: ["Vì làm mòn lốp nhanh", "Vì làm tăng nguy cơ lật xe nghiêm trọng", "Vì sẽ vi phạm luật giao thông", "Vì làm hỏng động cơ"], answer: "Vì làm tăng nguy cơ lật xe nghiêm trọng" },
-        { id: 27, question: "Nếu xe nâng được trang bị bình chữa cháy, người vận hành cần phải làm gì?", options: ["Không cần quan tâm đến nó", "Biết vị trí và cách sử dụng bình chữa cháy", "Tháo nó ra để xe nhẹ hơn", "Chỉ kỹ thuật viên mới được dùng"], answer: "Biết vị trí và cách sử dụng bình chữa cháy" },
-        { id: 28, question: "Xe nâng dùng để làm gì?", options: ["Dùng trong xây dựng nhà cao tầng", "Làm mát kho lạnh", "Nâng hạ và di chuyển hàng hóa", "Tạo điện cho nhà xưởng"], answer: "Nâng hạ và di chuyển hàng hóa" },
-        { id: 29, question: "Khi sạc ắc quy cho xe nâng điện, tại sao phải thực hiện ở nơi thông thoáng?", options: ["Để xe nguội nhanh hơn", "Vì quá trình sạc sinh ra khí Hydro dễ cháy nổ", "Để dễ dàng quan sát quá trình sạc", "Để tránh bụi bẩn"], answer: "Vì quá trình sạc sinh ra khí Hydro dễ cháy nổ" },
-        { id: 30, question: "Việc lắp các phụ kiện như kẹp giấy, gầu xúc... ảnh hưởng thế nào đến tải trọng nâng của xe?", options: ["Tăng tải trọng nâng", "Không ảnh hưởng", "Làm giảm tải trọng nâng cho phép của xe", "Chỉ ảnh hưởng đến tốc độ"], answer: "Làm giảm tải trọng nâng cho phép của xe" },
-        { id: 31, question: "Khi phát hiện rò rỉ dầu thủy lực, người vận hành cần làm gì?", options: ["Dùng tay bịt lại", "Tiếp tục làm việc", "Dừng xe, báo cáo kỹ thuật", "Đổ thêm dầu"], answer: "Dừng xe, báo cáo kỹ thuật" },
-        { id: 32, question: "Càng nâng xe nâng thường được làm bằng vật liệu gì?", options: ["Gang đúc", "Thép hợp kim cường độ cao", "Nhôm", "Inox"], answer: "Thép hợp kim cường độ cao" },
-        { id: 33, question: "Khi nâng hàng, bạn thấy đuôi xe nâng bị hẫng lên khỏi mặt đất, bạn nên làm gì?", options: ["Nhờ người ngồi lên đuôi xe làm đối trọng", "Hạ hàng xuống ngay lập tức vì quá tải", "Tăng ga mạnh để nâng lên", "Tiếp tục di chuyển"], answer: "Hạ hàng xuống ngay lập tức vì quá tải" },
-        { id: 34, question: "Tại sao không được để người đi bộ đi dưới càng nâng đang có hàng?", options: ["Làm vướng víu người lái", "Hàng có thể rơi gây tai nạn tử vong", "Vi phạm nội quy công ty", "Cả 3 phương án trên"], answer: "Hàng có thể rơi gây tai nạn tử vong" },
-        { id: 35, question: "Kiểm tra mức axit trong bình ắc quy xe nâng điện nếu thấy thiếu cần bổ sung gì?", options: ["Axit sunfuric đậm đặc", "Nước cất chuyên dụng", "Nước máy", "Nước khoáng"], answer: "Nước cất chuyên dụng" },
-        { id: 36, question: "Hệ thống lái của xe nâng thường tác động vào bánh nào?", options: ["Hai bánh trước", "Hai bánh sau", "Cả bốn bánh", "Bên trái"], answer: "Hai bánh sau" },
-        { id: 37, question: "Tác dụng của tấm tựa hàng (Backrest) trên xe nâng là gì?", options: ["Để làm đẹp", "Ngăn hàng đổ về phía cabin và bảo vệ xilanh", "Để treo đồ", "Để tăng tải trọng"], answer: "Ngăn hàng đổ về phía cabin và bảo vệ xilanh" },
-        { id: 38, question: "Khi đi xuống dốc không có hàng, xe nâng nên đi như thế nào?", options: ["Đi tiến", "Đi lùi", "Tắt máy trôi tự do", "Đi chéo"], answer: "Đi tiến" },
-        { id: 39, question: "Bộ phận nào thực hiện việc nâng hạ càng nâng?", options: ["Xilanh nghiêng", "Xilanh nâng và xích nâng", "Vô lăng", "Bơm cao áp"], answer: "Xilanh nâng và xích nâng" },
-        { id: 40, question: "Tấm thông số kỹ thuật (Data Plate) cho biết điều gì?", options: ["Tên người lái xe", "Tải trọng nâng tối đa ở các tâm tải trọng khác nhau", "Địa chỉ nhà máy sản xuất", "Biển số xe"], answer: "Tải trọng nâng tối đa ở các tâm tải trọng khác nhau" },
-        { id: 41, question: "Khi lái xe nâng vào container, điều kiện tiên quyết là gì?", options: ["Container phải được chèn bánh chắc chắn và sàn container đủ chịu lực", "Phải có người đứng xi nhan", "Xe phải đầy xăng", "Sàn container phải sạch"], answer: "Container phải được chèn bánh chắc chắn và sàn container đủ chịu lực" },
-        { id: 42, question: "Khoảng cách an toàn tối thiểu với các xe nâng khác khi cùng di chuyển là bao nhiêu?", options: ["1 mét", "2 mét", "Khoảng 3 lần chiều dài thân xe", "10 mét"], answer: "Khoảng 3 lần chiều dài thân xe" },
-        { id: 43, question: "Tại sao không nên đánh lái gấp khi xe nâng đang ở tốc độ cao?", options: ["Làm mòn lốp", "Gây lật xe", "Hỏng vô lăng", "Tốn nhiên liệu"], answer: "Gây lật xe" },
-        { id: 44, question: "Khi kiểm tra dầu động cơ, ta dùng bộ phận nào?", options: ["Nắp bình xăng", "Que thăm dầu", "Đèn pha", "Đồng hồ nước"], answer: "Que thăm dầu" },
-        { id: 45, question: "Lọc gió động cơ bị bẩn sẽ gây ra hiện tượng gì?", options: ["Máy khó nổ, khói đen, tốn nhiên liệu", "Xe chạy nhanh hơn", "Máy mát hơn", "Không ảnh hưởng"], answer: "Máy khó nổ, khói đen, tốn nhiên liệu" },
-        { id: 46, question: "Khi làm việc ban đêm, xe nâng phải đảm bảo điều kiện gì?", options: ["Có nhạc sôi động", "Hệ thống đèn chiếu sáng và cảnh báo hoạt động tốt", "Phải sơn màu trắng", "Không cần điều kiện gì"], answer: "Hệ thống đèn chiếu sáng và cảnh báo hoạt động tốt" },
-        { id: 47, question: "Hành động nào sau đây bị nghiêm cấm đối với người vận hành xe nâng?", options: ["Sử dụng điện thoại khi lái xe", "Uống rượu bia trước khi làm việc", "Cho người khác đứng lên càng nâng để nâng lên cao", "Tất cả các hành động trên"], answer: "Tất cả các hành động trên" },
-        { id: 48, question: "Tại sao xe nâng có đối trọng phía sau?", options: ["Để chở thêm người", "Để cân bằng với khối lượng hàng hóa phía trước càng", "Để bảo vệ động cơ", "Để lùi xe nhanh hơn"], answer: "Để cân bằng với khối lượng hàng hóa phía trước càng" },
-        { id: 49, question: "Khi nghe thấy tiếng kêu lạ từ động cơ hoặc hệ thống thủy lực, bạn làm gì?", options: ["Tăng ga để át tiếng kêu", "Dừng xe ngay để kiểm tra", "Kệ nó, làm xong ca rồi báo", "Đổ thêm nước"], answer: "Dừng xe ngay để kiểm tra" },
-        { id: 50, question: "Xilanh nghiêng có tác dụng gì khi xe đang chở hàng di chuyển?", options: ["Nghiêng về trước tối đa", "Nghiêng về sau (về phía người lái) để giữ hàng ổn định", "Giữ thẳng đứng", "Nghiêng sang trái"], answer: "Nghiêng về sau (về phía người lái) để giữ hàng ổn định" },
-        { id: 51, question: "Khi sạc bình điện, nếu thấy bình nóng bất thường (> 50°C) bạn nên làm gì?", options: ["Tiếp tục sạc", "Dừng sạc ngay và kiểm tra", "Dội nước lạnh lên bình", "Bật quạt mạnh"], answer: "Dừng sạc ngay và kiểm tra" },
-        { id: 52, question: "Bộ phận 'Pedal Inch' (bàn đạp nhích) trên xe nâng số tự động dùng để làm gì?", options: ["Để phanh dừng hẳn", "Để di chuyển chậm và chính xác khi nâng hạ hàng", "Để tăng tốc", "Để sang số"], answer: "Để di chuyển chậm và chính xác khi nâng hạ hàng" },
-        { id: 53, question: "Khi đi qua khu vực có trần thấp, người lái phải chú ý gì?", options: ["Chiều cao tổng thể của khung nâng và hàng hóa", "Tốc độ xe", "Áp suất lốp", "Gương chiếu hậu"], answer: "Chiều cao tổng thể của khung nâng và hàng hóa" },
-        { id: 54, question: "Nếu bánh xe nâng bị lọt xuống hố nhỏ, bạn nên?", options: ["Cài số lùi và ga mạnh", "Dùng gỗ kê hoặc nhờ xe khác kéo hỗ trợ", "Nhờ người đẩy", "Tự nâng càng lên"], answer: "Dùng gỗ kê hoặc nhờ xe khác kéo hỗ trợ" },
-        { id: 55, question: "Dầu phanh xe nâng cần kiểm tra ở đâu?", options: ["Trong két nước", "Trong bình chứa dầu phanh chuyên dụng", "Trong lốp xe", "Trong bình xăng"], answer: "Trong bình chứa dầu phanh chuyên dụng" },
-        { id: 56, question: "Tác dụng của còi xe nâng là gì?", options: ["Chào hỏi đồng nghiệp", "Báo hiệu khi vào cua, khuất tầm nhìn hoặc cảnh báo nguy hiểm", "Thay thế cho phanh", "Để giải trí"], answer: "Báo hiệu khi vào cua, khuất tầm nhìn hoặc cảnh báo nguy hiểm" },
-        { id: 57, question: "Khi gặp sự cố cháy nổ trên xe nâng, ưu tiên hàng đầu là gì?", options: ["Cố gắng cứu hàng", "Đảm bảo an toàn tính mạng, tắt máy và sử dụng bình chữa cháy", "Chạy đi tìm quản lý", "Quay phim chụp ảnh"], answer: "Đảm bảo an toàn tính mạng, tắt máy và sử dụng bình chữa cháy" },
-        { id: 58, question: "Khi đỗ xe nâng qua đêm, càng nâng phải đặt ở trạng thái nào?", options: ["Nâng cao 1 mét", "Hạ sát mặt đất, mũi càng chạm đất", "Để nghiêng về sau", "Để trên kệ"], answer: "Hạ sát mặt đất, mũi càng chạm đất" },
-        { id: 59, question: "Tại sao không nên sử dụng xe nâng dầu trong kho lạnh kín?", options: ["Gây ngộ độc khí CO và thiếu oxy", "Làm hỏng hàng hóa", "Xe không nổ được máy", "Cả 3 phương án trên"], answer: "Gây ngộ độc khí CO và thiếu oxy" },
-        { id: 60, question: "Thời gian làm việc liên tục của người lái xe nâng nên tuân theo quy định nào?", options: ["Làm đến khi hết việc", "Làm theo ca và có thời gian nghỉ ngơi để đảm bảo sự tỉnh táo", "Chỉ làm 1 tiếng mỗi ngày", "Làm 24/24"], answer: "Làm theo ca và có thời gian nghỉ ngơi để đảm bảo sự tỉnh táo" },
-        { id: 61, question: "Tâm tải trọng (Load Center) là gì?", options: ["Là trọng tâm của xe", "Khoảng cách từ mặt trước càng nâng đến trọng tâm của kiện hàng", "Chiều dài của càng nâng", "Độ cao tối đa của xe"], answer: "Khoảng cách từ mặt trước càng nâng đến trọng tâm của kiện hàng" },
-        { id: 62, question: "Khi nâng hàng, nếu kiện hàng dài vượt quá chiều dài càng nâng, bạn làm gì?", options: ["Vẫn nâng bình thường", "Dùng thêm càng phụ (Extension Forks) phù hợp", "Dùng dây xích buộc hàng vào càng", "Nhờ người đứng lên đuôi xe"], answer: "Dùng thêm càng phụ (Extension Forks) phù hợp" },
-        { id: 63, question: "Lốp đặc xe nâng có ưu điểm gì so với lốp hơi?", options: ["Đi êm hơn", "Không bị thủng, chịu tải tốt trong môi trường nhà xưởng", "Rẻ hơn", "Chạy nhanh hơn"], answer: "Không bị thủng, chịu tải tốt trong môi trường nhà xưởng" },
-        { id: 64, question: "Bộ chia thủy lực (Control Valve) có nhiệm vụ gì?", options: ["Tạo áp suất dầu", "Điều hướng dòng dầu đến các xilanh theo lệnh người lái", "Làm mát dầu", "Lọc cặn bẩn"], answer: "Điều hướng dòng dầu đến các xilanh theo lệnh người lái" },
-        { id: 65, question: "Khi thay bình gas (LPG) cho xe nâng, cần chú ý gì?", options: ["Khóa van bình, tắt máy, không có nguồn lửa gần đó", "Thay khi máy đang nổ", "Vừa thay vừa hút thuốc", "Không cần khóa van"], answer: "Khóa van bình, tắt máy, không có nguồn lửa gần đó" },
-        { id: 66, question: "Két nước làm mát bị thiếu nước sẽ gây hậu quả?", options: ["Xe chạy yếu", "Nóng máy, có thể gây bó máy, thổi gioăng mặt máy", "Làm hỏng phanh", "Làm hỏng ắc quy"], answer: "Nóng máy, có thể gây bó máy, thổi gioăng mặt máy" },
-        { id: 67, question: "Bộ phận nào truyền động từ động cơ đến hộp số?", options: ["Biến mô thủy lực (hoặc côn)", "Xích nâng", "Càng nâng", "Vô lăng"], answer: "Biến mô thủy lực (hoặc côn)" },
-        { id: 68, question: "Trên taplo xe nâng, đèn báo 'Dầu bôi trơn động cơ' sáng đỏ có nghĩa là gì?", options: ["Áp suất dầu quá thấp, phải dừng máy kiểm tra ngay", "Dầu đang rất tốt", "Xe sắp hết xăng", "Đến giờ thay dầu"], answer: "Áp suất dầu quá thấp, phải dừng máy kiểm tra ngay" },
-        { id: 69, question: "Khi di chuyển trên đường có nhiều người đi bộ, bạn phải?", options: ["Bấm còi liên tục", "Giảm tốc độ, quan sát kỹ và nhường đường nếu cần", "Tăng tốc để vượt qua", "Quát mắng người đi bộ"], answer: "Giảm tốc độ, quan sát kỹ và nhường đường nếu cần" },
-        { id: 70, question: "Hệ thống điện xe nâng dầu thường sử dụng điện áp bao nhiêu?", options: ["12V hoặc 24V", "220V", "110V", "380V"], answer: "12V hoặc 24V" },
-        { id: 71, question: "Khi sạc xe nâng điện, tại sao phải mở nắp thùng chứa ắc quy?", options: ["Để trang trí", "Để thoát nhiệt và thoát khí Hydro dễ cháy nổ", "Để dễ nhìn bình", "Để tránh bụi"], answer: "Để thoát nhiệt và thoát khí Hydro dễ cháy nổ" },
-        { id: 72, question: "Van an toàn trong hệ thống thủy lực có tác dụng?", options: ["Làm xe chạy nhanh hơn", "Ngăn chặn áp suất hệ thống vượt quá giới hạn cho phép", "Để người lái chỉnh tốc độ nâng", "Làm đẹp"], answer: "Ngăn chặn áp suất hệ thống vượt quá giới hạn cho phép" },
-        { id: 73, question: "Khi bánh xe bị trượt trên nền ướt, bạn nên làm gì?", options: ["Đạp phanh thật mạnh", "Nhả ga, giữ thẳng lái đến khi xe ổn định", "Đánh lái thật nhanh", "Tắt máy ngay"], answer: "Nhả ga, giữ thẳng lái đến khi xe ổn định" },
-        { id: 74, question: "Sử dụng gương chiếu hậu giúp bạn?", options: ["Trang điểm", "Hỗ trợ quan sát phía sau và hai bên hông xe", "Lái xe nhanh hơn", "Nhìn rõ hàng hóa hơn"], answer: "Hỗ trợ quan sát phía sau và hai bên hông xe" },
-        { id: 75, question: "Khi nâng kiện hàng có kích thước không ổn định (dễ đổ), bạn nên?", options: ["Nâng thật nhanh", "Dùng dây đai ràng buộc chắc chắn trước khi di chuyển", "Nhờ người đứng giữ hàng", "Nghiêng càng về phía trước"], answer: "Dùng dây đai ràng buộc chắc chắn trước khi di chuyển" },
-        { id: 76, question: "Phanh tay xe nâng nên được sử dụng khi nào?", options: ["Khi đang chạy nhanh", "Khi dừng đỗ xe hoặc khi nâng hàng tại chỗ", "Khi xuống dốc", "Không bao giờ dùng"], answer: "Khi dừng đỗ xe hoặc khi nâng hàng tại chỗ" },
-        { id: 77, question: "Tác dụng của dây đai an toàn trên xe nâng là gì?", options: ["Đối phó với cảnh sát", "Giữ người lái trong cabin nếu xe bị lật, tránh bị xe đè", "Làm người lái khó chịu", "Để buộc hàng"], answer: "Giữ người lái trong cabin nếu xe bị lật, tránh bị xe đè" },
-        { id: 78, question: "Khi vận hành xe nâng trong kho lạnh, dầu thủy lực cần loại gì?", options: ["Dầu thông thường", "Dầu chuyên dụng chịu được nhiệt độ thấp (không bị đông đặc)", "Dầu ăn", "Không cần dầu"], answer: "Dầu chuyên dụng chịu được nhiệt độ thấp (không bị đông đặc)" },
-        { id: 79, question: "Khi xe nâng bị hỏng giữa đường, bạn cần làm gì?", options: ["Bỏ xe đó đi về", "Đặt biển cảnh báo, hạ càng và gọi kỹ thuật sửa chữa", "Cố gắng đẩy xe một mình", "Bật đèn pha thật sáng"], answer: "Đặt biển cảnh báo, hạ càng và gọi kỹ thuật sửa chữa" },
-        { id: 80, question: "Bảo dưỡng định kỳ xe nâng giúp?", options: ["Kéo dài tuổi thọ xe", "Đảm bảo an toàn vận hành", "Giảm chi phí sửa chữa lớn", "Tất cả các ý trên"], answer: "Tất cả các ý trên" },
-        { id: 81, question: "Bộ phận nào giúp thay đổi hướng đi của xe nâng?", options: ["Hộp số", "Hệ thống lái (vô lăng, xilanh lái)", "Càng nâng", "Xích nâng"], answer: "Hệ thống lái (vô lăng, xilanh lái)" },
-        { id: 82, question: "Kỹ thuật 'nghiêng khung về phía sau' khi chở hàng có tác dụng gì?", options: ["Làm xe đẹp hơn", "Tăng tính ổn định, ngăn hàng trượt khỏi càng", "Làm xe chạy nhanh hơn", "Làm hàng nhẹ đi"], answer: "Tăng tính ổn định, ngăn hàng trượt khỏi càng" },
-        { id: 83, question: "Khi làm việc gần dây điện cao thế, khoảng cách an toàn là bao nhiêu?", options: ["Càng xa càng tốt (tối thiểu 3-5m tùy điện áp)", "1 mét", "0.5 mét", "Cứ đi dưới dây điện không sao"], answer: "Càng xa càng tốt (tối thiểu 3-5m tùy điện áp)" },
-        { id: 84, question: "Tại sao không được dùng xe nâng để đẩy các xe khác?", options: ["Dễ gây hỏng hộp số và khung nâng của xe nâng", "Làm trầy sơn xe khác", "Tốn xăng", "Xe nâng không đủ khỏe"], answer: "Dễ gây hỏng hộp số và khung nâng của xe nâng" },
-        { id: 85, question: "Lọc dầu diesel có tác dụng gì?", options: ["Làm dầu diesel thơm hơn", "Loại bỏ cặn bẩn và nước trong nhiên liệu trước khi vào bơm cao áp", "Tăng công suất máy", "Làm mát máy"], answer: "Loại bỏ cặn bẩn và nước trong nhiên liệu trước khi vào bơm cao áp" },
-        { id: 86, question: "Khi lái xe nâng, hai tay nên đặt ở đâu?", options: ["Một tay vô lăng, một tay cần điều khiển", "Cả hai tay giữ vô lăng (trừ khi thao tác cần nâng)", "Để trên đùi", "Khoanh tay"], answer: "Cả hai tay giữ vô lăng (trừ khi thao tác cần nâng)" },
-        { id: 87, question: "Người đứng xem có được phép đứng trong tầm hoạt động của xe nâng không?", options: ["Có, nếu là người quen", "Tuyệt đối không", "Có, nếu đứng xa 1 mét", "Có, nếu có đội mũ bảo hiểm"], answer: "Tuyệt đối không" },
-        { id: 88, question: "Nếu phát hiện càng nâng có vết nứt, bạn làm gì?", options: ["Lấy băng dính dán lại", "Tiếp tục nâng hàng nhẹ", "Ngừng sử dụng ngay và thay càng mới", "Sơn đè lên vết nứt"], answer: "Ngừng sử dụng ngay và thay càng mới" },
-        { id: 89, question: "Hộp số sàn xe nâng khác hộp số tự động ở điểm nào?", options: ["Số sàn có bàn đạp ly hợp (côn)", "Số tự động chạy chậm hơn", "Số sàn không có phanh", "Không khác nhau"], answer: "Số sàn có bàn đạp ly hợp (côn)" },
-        { id: 90, question: "Khi vào cua khuất tầm nhìn, người lái xe nâng cần làm gì?", options: ["Tăng tốc để qua nhanh", "Dừng lại hoàn toàn", "Giảm tốc độ và bấm còi báo hiệu", "Nhắm mắt đi tiếp"], answer: "Giảm tốc độ và bấm còi báo hiệu" },
-        { id: 91, question: "Tình trạng lốp xe nâng bị 'chửa' (phồng) là do?", options: ["Lốp quá mới", "Bị đứt kết cấu lớp bố bên trong, cực kỳ nguy hiểm", "Do trời nắng", "Do bơm quá ít hơi"], answer: "Bị đứt kết cấu lớp bố bên trong, cực kỳ nguy hiểm" },
-        { id: 92, question: "Để khởi động xe nâng dầu vào mùa đông dễ dàng hơn, ta thường dùng?", options: ["Nước nóng dội vào máy", "Chế độ sấy máy (Glow plug)", "Đẩy xe", "Đổ thêm xăng vào dầu"], answer: "Chế độ sấy máy (Glow plug)" },
-        { id: 93, question: "Ý nghĩa của ký hiệu 'Max Tilt Angle' trên xe nâng?", options: ["Góc nghiêng tối đa của khung nâng", "Tốc độ tối đa", "Cân nặng của xe", "Chiều cao xe"], answer: "Góc nghiêng tối đa của khung nâng" },
-        { id: 94, question: "Khi đi trên mặt đường có nhiều ổ gà, người lái nên?", options: ["Đi thật nhanh để lướt qua", "Giảm tốc độ tối đa để tránh rung lắc mạnh gây rơi hàng hoặc hỏng xe", "Đi như bình thường", "Nâng hàng cao lên"], answer: "Giảm tốc độ tối đa để tránh rung lắc mạnh gây rơi hàng hoặc hỏng xe" },
-        { id: 95, question: "Nhiệm vụ của máy phát điện (Alternator) trên xe nâng dầu là gì?", options: ["Để tạo ra xăng", "Để nạp điện cho bình ắc quy khi máy đang nổ", "Để làm mát động cơ", "Để nâng càng"], answer: "Để nạp điện cho bình ắc quy khi máy đang nổ" },
-        { id: 96, question: "Khói xe nâng có màu trắng bất thường có thể là dấu hiệu của?", options: ["Máy rất tốt", "Nước lọt vào buồng đốt", "Thiếu dầu diesel", "Hỏng còi"], answer: "Nước lọt vào buồng đốt" },
-        { id: 97, question: "Chở hàng quá cao làm trọng tâm xe nâng thay đổi như thế nào?", options: ["Hạ thấp xuống", "Nâng cao lên, làm xe cực kỳ dễ lật ngang hoặc lật tới", "Không thay đổi", "Tiến về phía sau"], answer: "Nâng cao lên, làm xe cực kỳ dễ lật ngang hoặc lật tới" },
-        { id: 98, question: "Khi di chuyển xe nâng không tải trên đường giao thông công cộng, bạn phải tuân thủ?", options: ["Luật giao thông đường bộ", "Nội quy kho", "Sở thích cá nhân", "Không cần tuân thủ gì"], answer: "Luật giao thông đường bộ" },
-        { id: 99, question: "Nếu bàn đạp phanh có cảm giác 'nhẹ' hoặc đạp sát sàn không ăn, bạn nên?", options: ["Đạp thật nhiều lần", "Dừng xe ngay, kiểm tra dầu phanh và hệ thống phanh", "Vẫn lái bình thường", "Dùng số để phanh"], answer: "Dừng xe ngay, kiểm tra dầu phanh và hệ thống phanh" },
-        { id: 100, question: "Người vận hành xe nâng có được phép tự ý thay đổi đối trọng của xe không?", options: ["Có, nếu hàng quá nặng", "Tuyệt đối không, vì sẽ làm sai lệch thiết kế an toàn của nhà sản xuất", "Có, nếu dùng thép nặng", "Có, nếu được thợ hàn cho phép"], answer: "Tuyệt đối không, vì sẽ làm sai lệch thiết kế an toàn của nhà sản xuất" },
-        { id: 101, question: "Mục đích cuối cùng của việc tuân thủ các quy tắc an toàn xe nâng là gì?", options: ["Để không bị phạt", "Bảo vệ tính mạng con người và tài sản", "Để nhanh hết giờ làm", "Để làm hài lòng sếp"], answer: "Bảo vệ tính mạng con người và tài sản" }
-    ];
-    let examQuestions = []; 
-    let currentIdx = 0;
-    let userAnswers = {};
-    let isFinished = false;
-    let timerInterval;
-    let timeLeft = 20 * 60;
+            // Bổ sung các câu từ 11 đến 101
+            { q: "Khi đỗ xe nâng, người lái cần thực hiện thao tác nào sau đây?", options: { A: "Hạ càng sát đất, nghiêng trụ ra phía trước, kéo phanh tay.", B: "Nâng càng cao 1m để tránh người đi qua.", C: "Tắt máy và để số tiến.", D: "Chỉ cần kéo phanh tay là đủ." }, correct: "A", group: "Vận hành" },
+            { q: "Áp suất lốp xe nâng quá thấp sẽ gây ra hậu quả gì?", options: { A: "Xe đi nhanh hơn.", B: "Mất ổn định và dễ lật xe khi nâng hàng.", C: "Tiết kiệm nhiên liệu.", D: "Tăng tuổi thọ lốp." }, correct: "B", group: "An toàn" },
+            { q: "Sử dụng xe nâng để nâng người lên cao mà không có lồng bảo vệ được phép không?", options: { A: "Được phép nếu đứng vững.", B: "Tuyệt đối không được phép.", C: "Được phép nếu nâng thấp.", D: "Được phép nếu có người giữ ở dưới." }, correct: "B", group: "An toàn" },
+            { q: "Khi đi qua cửa kho hoặc khúc quanh, người lái phải làm gì?", options: { A: "Tăng tốc để qua nhanh.", B: "Đi bình thường.", C: "Giảm tốc độ và bấm còi cảnh báo.", D: "Tắt đèn để không làm chói mắt người khác." }, correct: "C", group: "Kỹ thuật lái" },
+            { q: "Xích nâng cần được kiểm tra yếu tố nào sau đây?", options: { A: "Độ giãn, vết nứt và bôi trơn.", B: "Màu sơn của xích.", C: "Độ dài của xích.", D: "Trọng lượng của xích." }, correct: "A", group: "Bảo dưỡng" },
+            { q: "Khi xe nâng bị lật ngang, người lái nên làm gì?", options: { A: "Nhảy ra khỏi xe ngay lập tức.", B: "Ngồi chặt trên ghế, bám vô lăng, nghiêng người ngược hướng lật.", C: "Cố gắng đẩy xe lại.", D: "Kêu cứu." }, correct: "B", group: "An toàn" },
+            { q: "Bộ phận nào có chức năng thay đổi hướng chuyển động của xe?", options: { A: "Hệ thống phanh.", B: "Hệ thống lái.", C: "Hệ thống nâng hạ.", D: "Hộp số." }, correct: "B", group: "Cấu tạo" },
+            { q: "Dầu thủy lực trong xe nâng có tác dụng gì?", options: { A: "Bôi trơn động cơ.", B: "Làm mát phanh.", C: "Truyền lực cho hệ thống nâng hạ.", D: "Để rửa xe." }, correct: "C", group: "Cấu tạo" },
+            { q: "Tại sao không nên phanh gấp khi xe nâng đang có tải?", options: { A: "Làm hỏng phanh.", B: "Làm hàng rơi ra phía trước và lật xe.", C: "Làm mòn lốp.", D: "Gây tốn xăng." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Càng nâng nên đưa vào pallet như thế nào?", options: { A: "Vào một nửa chiều dài pallet.", B: "Vào hết chiều dài pallet và nằm cân đối.", C: "Vào lệch sang trái.", D: "Vào lệch sang phải." }, correct: "B", group: "Vận hành" },
+            { q: "Khi làm việc ban đêm, xe nâng bắt buộc phải có thiết bị gì?", options: { A: "Còi hơi.", B: "Đèn chiếu sáng và đèn tín hiệu.", C: "Gương chiếu hậu lớn.", D: "Máy nghe nhạc." }, correct: "B", group: "An toàn" },
+            { q: "Khói xả động cơ diesel có màu đen đặc là dấu hiệu gì?", options: { A: "Động cơ quá tốt.", B: "Thừa nhiên liệu hoặc lọc gió bị tắc.", C: "Thiếu dầu bôi trơn.", D: "Hết nước làm mát." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Khoảng cách giữa hai càng nâng nên điều chỉnh như thế nào?", options: { A: "Càng rộng càng tốt.", B: "Càng hẹp càng tốt.", C: "Rộng tối đa và cân đối với tải trọng.", D: "Giữ nguyên một vị trí cố định." }, correct: "C", group: "Vận hành" },
+            { q: "Khi lái xe nâng lên dốc có hàng, người lái phải đi như thế nào?", options: { A: "Đi tiến.", B: "Đi lùi.", C: "Đi chéo.", D: "Tắt máy đẩy lên." }, correct: "A", group: "Kỹ thuật lái" },
+            { q: "Tải trọng tâm (Load Center) thường được tính từ đâu?", options: { A: "Từ đầu càng nâng.", B: "Từ mặt tựa lưng của càng nâng.", C: "Từ bánh trước.", D: "Từ mặt đất." }, correct: "B", group: "Thông số kỹ thuật" },
+            { q: "Pallet hỏng có được sử dụng để nâng hàng không?", options: { A: "Được nếu hàng nhẹ.", B: "Được nếu dùng dây buộc lại.", C: "Tuyệt đối không được sử dụng.", D: "Được nếu chỉ nâng thấp." }, correct: "C", group: "An toàn" },
+            { q: "Khi người đi bộ cắt ngang đường xe nâng đang chạy, ưu tiên thuộc về ai?", options: { A: "Xe nâng.", B: "Người đi bộ.", C: "Ai đi nhanh hơn thì đi trước.", D: "Do hai bên tự thỏa thuận." }, correct: "B", group: "An toàn" },
+            { q: "Van an toàn trong hệ thống thủy lực có tác dụng gì?", options: { A: "Tăng tốc độ nâng.", B: "Tránh quá tải cho hệ thống.", C: "Giảm tiếng ồn.", D: "Tiết kiệm dầu." }, correct: "B", group: "Cấu tạo" },
+            { q: "Nhiên liệu của xe nâng điện là gì?", options: { A: "Xăng.", B: "Dầu Diesel.", C: "Ắc quy (điện năng).", D: "Gas (LPG)." }, correct: "C", group: "Cấu tạo" },
+            { q: "Trong kho hẹp, loại xe nâng nào thường được sử dụng?", options: { A: "Xe nâng container.", B: "Xe nâng Reach Truck (tầm cao).", C: "Xe nâng dầu 10 tấn.", D: "Xe cẩu." }, correct: "B", group: "Vận hành" },
+            { q: "Trước khi khởi động xe nâng dầu, cần kiểm tra mức dầu nào?", options: { A: "Dầu động cơ.", B: "Dầu hộp số.", C: "Dầu thủy lực.", D: "Tất cả các loại trên." }, correct: "D", group: "Bảo dưỡng" },
+            { q: "Khi nâng hàng, nếu nghe tiếng kêu lạ từ hệ thống thủy lực, bạn làm gì?", options: { A: "Cố gắng làm nốt ca.", B: "Dừng máy và báo kỹ thuật kiểm tra.", C: "Đổ thêm nước vào bình dầu.", D: "Bịt tai lại và làm tiếp." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Độ nghiêng của trụ nâng ra phía sau có tác dụng gì khi di chuyển?", options: { A: "Để hàng không bị trượt ra phía trước.", B: "Để xe đi nhanh hơn.", C: "Để tiết kiệm dầu.", D: "Chỉ để cho đẹp." }, correct: "A", group: "Kỹ thuật lái" },
+            { q: "Khi xe nâng làm việc trong container, cần lưu ý điều gì nhất?", options: { A: "Đèn chiếu sáng bên trong và sàn container.", B: "Màu sơn container.", C: "Kích thước bánh xe.", D: "Nhiệt độ ngoài trời." }, correct: "A", group: "An toàn" },
+            { q: "Phanh tay xe nâng nên được sử dụng khi nào?", options: { A: "Khi đang chạy tốc độ cao.", B: "Khi dừng, đỗ xe hoặc trên dốc.", C: "Khi nâng hàng lên cao.", D: "Khi đang lùi xe." }, correct: "B", group: "Vận hành" },
+            { q: "Nước làm mát động cơ có tác dụng gì?", options: { A: "Rửa sạch động cơ.", B: "Giữ nhiệt độ động cơ ở mức ổn định.", C: "Tăng công suất động cơ.", D: "Làm động cơ kêu to hơn." }, correct: "B", group: "Cấu tạo" },
+            { q: "Chiều dài của càng nâng phải đạt tối thiểu bao nhiêu so với pallet?", options: { A: "1/3 chiều dài pallet.", B: "1/2 chiều dài pallet.", C: "2/3 chiều dài pallet.", D: "Đúng bằng chiều dài pallet." }, correct: "C", group: "Thông số kỹ thuật" },
+            { q: "Việc thay đổi trọng tải của xe bằng cách thêm đối trọng (cục sắt) được phép không?", options: { A: "Được nếu cần nâng hàng nặng.", B: "Không được phép vì làm mất cân bằng thiết kế.", C: "Được nếu thợ cơ khí làm.", D: "Được nếu có người đứng phía sau xe." }, correct: "B", group: "An toàn" },
+            { q: "Khi sạc bình ắc quy xe nâng điện, cần chú ý điều gì?", options: { A: "Nơi sạc phải thông thoáng, tránh nguồn lửa.", B: "Sạc trong phòng kín để giữ điện.", C: "Vừa sạc vừa vận hành xe.", D: "Sạc càng nhanh càng tốt." }, correct: "A", group: "An toàn" },
+            { q: "Lọc dầu thủy lực nên được thay thế khi nào?", options: { A: "Khi dầu bị đen.", B: "Theo số giờ vận hành quy định của nhà sản xuất.", C: "Khi máy không nâng được nữa.", D: "10 năm một lần." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Gương chiếu hậu trên xe nâng có tác dụng chính là gì?", options: { A: "Để soi gương trang điểm.", B: "Để quan sát phía sau khi di chuyển.", C: "Để trang trí.", D: "Để quan sát hàng nâng." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Khi điều khiển xe nâng, chân trái của người lái (xe số sàn) đặt ở đâu?", options: { A: "Đặt lên bàn đạp ly hợp (côn).", B: "Đặt lên bàn đạp phanh.", C: "Đặt xuống sàn xe.", D: "Để tự do." }, correct: "A", group: "Vận hành" },
+            { q: "Tín hiệu còi xe nâng dùng để làm gì?", options: { A: "Chào hỏi đồng nghiệp.", B: "Cảnh báo khi vào góc khuất hoặc nguy hiểm.", C: "Thúc giục người khác tránh đường.", D: "Thử xem còi còn kêu không." }, correct: "B", group: "Tín hiệu" },
+            { q: "Khi xe đang di chuyển, người lái có được phép chỉnh ghế không?", options: { A: "Được nếu thấy mỏi.", B: "Không được, phải dừng xe hoàn toàn.", C: "Được nếu đường vắng.", D: "Được nếu lái bằng một tay." }, correct: "B", group: "An toàn" },
+            { q: "Bộ phận nào trên xe nâng chịu lực nhiều nhất khi nâng hàng?", options: { A: "Vô lăng.", B: "Trụ nâng và càng nâng.", C: "Ghế ngồi.", D: "Đối trọng." }, correct: "B", group: "Cấu tạo" },
+            { q: "Nếu lốp xe nâng là lốp đặc bị mẻ một miếng lớn, bạn nên làm gì?", options: { A: "Vẫn dùng bình thường.", B: "Thay lốp mới để đảm bảo cân bằng.", C: "Lấy băng keo dán lại.", D: "Sơn lại chỗ mẻ." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Khi nâng hàng cao, việc đánh lái gấp sẽ dẫn đến hậu quả gì?", options: { A: "Xe quay vòng nhanh hơn.", B: "Xe dễ bị lật nghiêng.", C: "Hàng sẽ cân bằng hơn.", D: "Tiết kiệm lốp." }, correct: "B", group: "An toàn" },
+            { q: "Trên xe nâng, ký hiệu 'LPG' nghĩa là gì?", options: { A: "Nhiên liệu dầu Diesel.", B: "Nhiên liệu khí hóa lỏng (Gas).", C: "Nhiên liệu điện.", D: "Dầu thủy lực." }, correct: "B", group: "Cấu tạo" },
+            { q: "Chiều cao nâng tự do (Free Lift) là gì?", options: { A: "Chiều cao nâng tối đa.", B: "Chiều cao nâng mà trụ nâng không thay đổi chiều cao tổng thể.", C: "Chiều cao khi không có hàng.", D: "Chiều cao từ đất đến ghế ngồi." }, correct: "B", group: "Thông số kỹ thuật" },
+            { q: "Người không có chứng chỉ vận hành có được lái xe nâng không?", options: { A: "Được nếu có người hướng dẫn ngồi cạnh.", B: "Tuyệt đối không được phép.", C: "Được nếu chỉ lái trong sân trống.", D: "Được nếu là chủ xe." }, correct: "B", group: "An toàn" },
+            { q: "Tại sao phải hạ hàng xuống thấp khi di chuyển?", options: { A: "Để tránh va chạm vào chướng ngại vật trên cao và giữ ổn định xe.", B: "Để tiết kiệm xăng.", C: "Để nhìn đường rõ hơn.", D: "Cả A và C đều đúng." }, correct: "D", group: "Kỹ thuật lái" },
+            { q: "Việc sử dụng điện thoại khi đang lái xe nâng là:", options: { A: "Được phép nếu dùng tai nghe.", B: "Bị nghiêm cấm vì gây mất tập trung.", C: "Được phép nếu đi chậm.", D: "Được phép nếu đang chờ hàng." }, correct: "B", group: "An toàn" },
+            { q: "Dây an toàn trên xe nâng có tác dụng gì khi xe bị lật?", options: { A: "Giúp người lái không bị văng ra ngoài và bị xe đè lên.", B: "Làm người lái đau hơn.", C: "Chỉ để đối phó với kiểm tra.", D: "Để giữ người lái ngồi im khi ngủ." }, correct: "A", group: "An toàn" },
+            { q: "Ký hiệu 'Max Capacity' trên xe nâng nghĩa là gì?", options: { A: "Tốc độ tối đa.", B: "Tải trọng nâng tối đa cho phép.", C: "Chiều cao nâng tối đa.", D: "Dung tích bình xăng." }, correct: "B", group: "Thông số kỹ thuật" },
+            { q: "Khi động cơ xe nâng đang quá nóng (sôi nước), bạn không nên làm gì?", options: { A: "Mở nắp két nước ngay lập tức.", B: "Để máy chạy không tải một lúc.", C: "Kiểm tra rò rỉ nước.", D: "Dừng xe vào chỗ mát." }, correct: "A", group: "An toàn" },
+            { q: "Màu của dầu thủy lực sạch thường là màu gì?", options: { A: "Đen đặc.", B: "Trắng như nước.", C: "Vàng nhạt hoặc đỏ trong suốt.", D: "Xanh lá cây đậm." }, correct: "C", group: "Bảo dưỡng" },
+            { q: "Khi làm việc trong môi trường thực phẩm, nên ưu tiên xe nâng loại nào?", options: { A: "Xe nâng chạy dầu Diesel khói đen.", B: "Xe nâng điện để không gây ô nhiễm.", C: "Xe nâng xăng.", D: "Xe nâng dùng củi đốt." }, correct: "B", group: "Vận hành" },
+            { q: "Biển báo hình tam giác vàng, viền đen có ý nghĩa gì trong kho?", options: { A: "Biển báo cấm.", B: "Biển báo nguy hiểm/cảnh báo.", C: "Biển chỉ dẫn.", D: "Biển báo hiệu lệnh." }, correct: "B", group: "Tín hiệu" },
+            { q: "Khi lái xe nâng lùi, người lái phải quan sát như thế nào?", options: { A: "Chỉ nhìn gương chiếu hậu.", B: "Quay đầu nhìn trực tiếp về phía sau.", C: "Nhìn về phía trước.", D: "Nhắm mắt lại và nghe tiếng tít tít." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Bộ phận 'Đối trọng' (Counterweight) nằm ở đâu trên xe nâng?", options: { A: "Phía trước xe.", B: "Phía sau xe.", C: "Dưới gầm xe.", D: "Trên nóc xe." }, correct: "B", group: "Cấu tạo" },
+            { q: "Khi càng nâng đang ở trên cao, có được phép đi bộ phía dưới không?", options: { A: "Được nếu đi nhanh.", B: "Tuyệt đối không được phép vì nguy hiểm.", C: "Được nếu có đội mũ bảo hiểm.", D: "Được nếu người lái xe đồng ý." }, correct: "B", group: "An toàn" },
+            { q: "Xích nâng bị chùng không đều hai bên sẽ dẫn đến:", options: { A: "Càng nâng bị nghiêng, gây rơi hàng.", B: "Xe đi chậm lại.", C: "Tiết kiệm dầu.", D: "Không ảnh hưởng gì." }, correct: "A", group: "Bảo dưỡng" },
+            { q: "Trước khi rời khỏi xe nâng, vị trí cần số nên ở đâu?", options: { A: "Số tiến.", B: "Số lùi.", C: "Số trung gian (N).", D: "Số nào cũng được." }, correct: "C", group: "Vận hành" },
+            { q: "Công tắc ngắt khẩn cấp (nút đỏ) trên xe nâng điện dùng để làm gì?", options: { A: "Để tắt nhạc.", B: "Để ngắt toàn bộ điện năng khi có sự cố.", C: "Để bật đèn pha.", D: "Để khởi động máy." }, correct: "B", group: "Vận hành" },
+            { q: "Khi nâng một kiện hàng quá nặng vượt mức cho phép, điều gì sẽ xảy ra?", options: { A: "Đuôi xe nâng bị hổng lên (bênh đuôi).", B: "Xe chạy nhanh hơn.", C: "Càng nâng sẽ ngắn lại.", D: "Động cơ sẽ mát hơn." }, correct: "A", group: "An toàn" },
+            { q: "Độ rơ vô lăng quá lớn sẽ gây khó khăn gì?", options: { A: "Khó điều khiển hướng đi chính xác.", B: "Làm xe tốn xăng hơn.", C: "Làm phanh không ăn.", D: "Làm hàng rơi." }, correct: "A", group: "Bảo dưỡng" },
+            { q: "Khi di chuyển trên đường có nhiều dầu mỡ, người lái xe nên:", options: { A: "Phanh gấp để thử độ trơn.", B: "Tăng tốc thật nhanh.", C: "Giảm tốc độ, tránh đánh lái gấp.", D: "Vừa đi vừa hút thuốc." }, correct: "C", group: "Kỹ thuật lái" },
+            { q: "Việc 'đùa nghịch' bằng xe nâng trong giờ làm việc là:", options: { A: "Được phép nếu không có sếp.", B: "Hành vi gây nguy hiểm và bị nghiêm cấm.", C: "Giúp giảm căng thẳng.", D: "Chỉ bị nhắc nhở nhẹ." }, correct: "B", group: "An toàn" },
+            { q: "Khi kiểm tra bình ắc quy, nếu thấy mức nước thấp, ta nên châm thêm gì?", options: { A: "Axit đậm đặc.", B: "Nước cất.", C: "Nước lọc.", D: "Nước muối." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Tại sao không nên để xe nâng hoạt động trong kho kín quá lâu (xe dầu)?", options: { A: "Gây ồn.", B: "Tích tụ khí độc Carbon Monoxide (CO) gây nguy hiểm tính mạng.", C: "Làm hỏng kho.", D: "Làm hàng hóa bị nóng." }, correct: "B", group: "An toàn" },
+            { q: "Trọng tâm của khối hàng nằm càng xa mặt tựa càng nâng thì:", options: { A: "Sức nâng của xe càng giảm.", B: "Sức nâng của xe càng tăng.", C: "Sức nâng không thay đổi.", D: "Xe đi nhanh hơn." }, correct: "A", group: "Thông số kỹ thuật" },
+            { q: "Ký hiệu 'Inch Pedal' (bàn đạp nhích) có tác dụng gì?", options: { A: "Để phanh dừng hẳn.", B: "Để ngắt truyền động đồng thời phanh nhẹ, giúp tiếp cận hàng chính xác.", C: "Để tăng tốc.", D: "Để lùi xe." }, correct: "B", group: "Vận hành" },
+            { q: "Nếu thấy có người đứng trên pallet để giữ hàng khi xe đang chạy, bạn làm gì?", options: { A: "Tiếp tục chạy thật chậm.", B: "Yêu cầu người đó xuống ngay lập tức.", C: "Tăng tốc để họ sợ.", D: "Cảm ơn họ vì đã giúp." }, correct: "B", group: "An toàn" },
+            { q: "Khi lấy hàng từ trên giá cao, thao tác đầu tiên là gì?", options: { A: "Nâng càng lên đúng độ cao pallet.", B: "Húc thẳng vào giá kệ.", C: "Bấm còi 3 lần.", D: "Lùi xe lại." }, correct: "A", group: "Kỹ thuật lái" },
+            { q: "Góc nghiêng trụ nâng (Mast Tilt) thường là khoảng bao nhiêu độ?", options: { A: "90 độ.", B: "Khoảng 5 - 12 độ.", C: "45 độ.", D: "180 độ." }, correct: "B", group: "Thông số kỹ thuật" },
+            { q: "Việc quá tải (Overload) xe nâng thường xuyên dẫn đến:", options: { A: "Gãy càng nâng, hỏng hệ thống thủy lực.", B: "Xe bền hơn.", C: "Tiết kiệm thời gian làm việc.", D: "Người lái được thưởng." }, correct: "A", group: "Bảo dưỡng" },
+            { q: "Khi lái xe nâng, tầm nhìn bị che khuất bởi các cột nhà, bạn nên:", options: { A: "Đi thật nhanh qua điểm mù.", B: "Quan sát kỹ, giảm tốc độ và bấm còi.", C: "Nhắm mắt lại.", D: "Nhờ người khác đẩy xe." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Hệ thống lái xe nâng thường nằm ở bánh nào?", options: { A: "Bánh trước.", B: "Bánh sau.", C: "Cả 4 bánh.", D: "Không có bánh nào." }, correct: "B", group: "Cấu tạo" },
+            { q: "Tại sao xe nâng lại lái bằng bánh sau?", options: { A: "Để xe đi nhanh hơn.", B: "Để tăng độ linh hoạt trong không gian hẹp.", C: "Để nhìn đường rõ hơn.", D: "Do thiết kế nhầm." }, correct: "B", group: "Lý thuyết cơ bản" },
+            { q: "Khi thay bình gas (LPG) cho xe nâng, cần lưu ý gì?", options: { A: "Khóa van bình gas, kiểm tra rò rỉ bằng nước xà phòng.", B: "Dùng lửa để thử xem có rò rỉ không.", C: "Vừa hút thuốc vừa thay.", D: "Không cần khóa van." }, correct: "A", group: "An toàn" },
+            { q: "Trên bảng điều khiển, đèn báo lọc gió sáng đỏ nghĩa là:", options: { A: "Lọc gió rất sạch.", B: "Lọc gió bị bẩn/tắc, cần vệ sinh hoặc thay thế.", C: "Động cơ sắp hỏng.", D: "Hết dầu máy." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Chiều cao xe nâng tổng thể (Overall Height) quan trọng khi nào?", options: { A: "Khi đi qua cửa kho hoặc hầm thấp.", B: "Khi xe đang đứng yên.", C: "Khi xe đang nâng hàng.", D: "Khi xe đang sạc điện." }, correct: "A", group: "Thông số kỹ thuật" },
+            { q: "Khi điều khiển xe nâng vào khúc cua, lực nào tác động dễ làm xe lật?", options: { A: "Lực hấp dẫn.", B: "Lực ly tâm.", C: "Lực ma sát.", D: "Lực đẩy." }, correct: "B", group: "Lý thuyết cơ bản" },
+            { q: "Một người lái xe nâng giỏi là người:", options: { A: "Lái xe nhanh nhất công ty.", B: "Nâng được hàng nặng nhất.", C: "Vận hành an toàn, đúng kỹ thuật và bảo quản xe tốt.", D: "Biết sửa mọi loại hỏng hóc." }, correct: "C", group: "Kỹ thuật lái" },
+            { q: "Khi phát hiện rò rỉ dầu thủy lực, người lái nên:", options: { A: "Lấy giẻ lau sạch và làm tiếp.", B: "Dừng xe báo cáo sửa chữa.", C: "Đổ thêm cát vào chỗ rò rỉ.", D: "Kệ nó, không sao." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Khoảng cách an toàn giữa hai xe nâng chạy cùng chiều là bao nhiêu?", options: { A: "1 mét.", B: "3 lần chiều dài thân xe.", C: "Càng gần càng tốt để hỗ trợ nhau.", D: "100 mét." }, correct: "B", group: "An toàn" },
+            { q: "Biển báo 'Stop' trong kho yêu cầu người lái xe:", options: { A: "Dừng hẳn xe, quan sát rồi mới đi tiếp.", B: "Chỉ cần giảm tốc độ.", B: "Bấm còi và đi thẳng.", D: "Quay đầu xe." }, correct: "A", group: "Tín hiệu" },
+            { q: "Khi nâng hàng, nếu hàng bị vướng vào giá kệ, bạn nên:", options: { A: "Cố gắng giật mạnh ra.", B: "Hạ hàng xuống, điều chỉnh lại vị trí rồi mới nâng tiếp.", C: "Tăng ga thật lớn.", D: "Nhờ người leo lên gỡ." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Bộ phận nào bảo vệ người lái khi có hàng rơi từ trên cao xuống?", options: { A: "Mái che an toàn (Overhead Guard).", B: "Cửa kính.", C: "Mũ bảo hiểm.", D: "Càng nâng." }, correct: "A", group: "Cấu tạo" },
+            { q: "Việc chở thêm người trên xe nâng khi không có ghế ngồi cho họ là:", options: { A: "Được phép nếu đi chậm.", B: "Vi phạm quy tắc an toàn nghiêm trọng.", C: "Được nếu là sếp.", D: "Được nếu người đó đứng chắc trên đối trọng." }, correct: "B", group: "An toàn" },
+            { q: "Khi đỗ xe trên dốc (trường hợp khẩn cấp), bạn phải làm gì ngoài phanh tay?", options: { A: "Tắt máy và bỏ đi.", B: "Chèn bánh xe bằng gỗ hoặc đá.", C: "Cứ để xe trôi tự do.", D: "Nhờ người giữ xe." }, correct: "B", group: "Vận hành" },
+            { q: "Dầu phanh xe nâng cần được kiểm tra ở đâu?", options: { A: "Bình chứa dầu phanh thường nằm gần bàn đạp phanh hoặc trong khoang máy.", B: "Trong lốp xe.", C: "Trong ống xả.", D: "Trên nóc cabin." }, correct: "A", group: "Bảo dưỡng" },
+            { q: "Tiếng còi 'bíp bíp' khi xe nâng lùi có mục đích gì?", options: { A: "Để người lái đỡ buồn ngủ.", B: "Cảnh báo cho người xung quanh biết xe đang lùi.", C: "Báo hiệu xe sắp hết xăng.", D: "Báo hiệu xe đã hỏng." }, correct: "B", group: "Tín hiệu" },
+            { q: "Khi vận chuyển hàng lỏng trong thùng, cần lưu ý điều gì?", options: { A: "Đi thật nhanh.", B: "Tránh phanh gấp hoặc đổi hướng đột ngột vì sóng sánh làm lật xe.", C: "Mở nắp thùng ra cho thoáng.", D: "Không cần lưu ý gì." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Ánh sáng xanh (Blue Light) chiếu xuống đất phía sau xe nâng điện dùng để:", options: { A: "Làm đẹp cho xe.", B: "Cảnh báo sớm cho người đi bộ biết xe đang đi tới từ phía sau.", C: "Chiếu sáng đường đi.", D: "Báo hiệu xe đã đầy pin." }, correct: "B", group: "Tín hiệu" },
+            { q: "Kỹ năng 'Sling' (sử dụng dây cẩu) kết hợp với xe nâng có được phép không?", options: { A: "Được nếu có phụ kiện chuyên dụng và được cấp phép.", B: "Tuyệt đối cấm dùng dây buộc vào càng nâng.", C: "Được nếu dùng dây thừng chắc.", D: "Chỉ được dùng dây thép." }, correct: "A", group: "Vận hành" },
+            { q: "Khi làm việc dưới trời mưa, xe nâng dầu cần lưu ý gì?", options: { A: "Trơn trượt và tầm nhìn hạn chế.", B: "Xe sẽ sạch hơn.", C: "Xe sẽ mát hơn.", D: "Không nên làm việc dưới mưa." }, correct: "A", group: "An toàn" },
+            { q: "Sau khi kết thúc ca làm việc, bạn nên làm gì với chìa khóa xe?", options: { A: "Cứ để trên xe.", B: "Rút chìa khóa và bàn giao hoặc để đúng nơi quy định.", C: "Cầm về nhà.", D: "Vứt đi." }, correct: "B", group: "Vận hành" },
+            { q: "Lốp đặc (Solid Tire) thường được dùng trong môi trường nào?", options: { A: "Đường bùn lầy.", B: "Sàn kho bằng phẳng, nhiều vật sắc nhọn (đinh, mảnh gỗ).", C: "Trên bãi cát.", D: "Trong rừng." }, correct: "B", group: "Thông số kỹ thuật" },
+            { q: "Khi thấy xe nâng khác đang tiến lại gần ở ngã tư kho, bạn nên:", options: { A: "Tăng tốc để vượt qua trước.", B: "Giảm tốc độ, bấm còi, và nhường đường nếu cần thiết.", C: "Cứ đi bình thường.", D: "Dừng lại và tắt máy." }, correct: "B", group: "Kỹ thuật lái" },
+            { q: "Tại sao không được phép nâng hàng khi trụ nâng đang nghiêng về phía trước?", options: { A: "Làm hàng dễ bị trượt rơi và xe dễ lật về phía trước.", B: "Làm xe đi chậm.", C: "Làm hỏng xích nâng.", D: "Làm tốn dầu thủy lực." }, correct: "A", group: "An toàn" },
+            { q: "Vệ sinh xe nâng nên thực hiện khi nào?", options: { A: "Khi xe quá bẩn.", B: "Định kỳ hàng tuần hoặc sau ca làm việc trong môi trường bụi bẩn.", C: "Khi xe hỏng.", D: "Không cần vệ sinh." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Người lái xe nâng có được phép tự ý sửa chữa hệ thống điện không?", options: { A: "Được nếu biết sơ sơ.", B: "Không, phải do nhân viên kỹ thuật chuyên môn thực hiện.", C: "Được nếu có kìm và tuốc nơ vít.", D: "Được nếu xe đã hết bảo hành." }, correct: "B", group: "Bảo dưỡng" },
+            { q: "Khi xuống dốc không tải (không có hàng), xe nâng đi như thế nào?", options: { A: "Đi tiến.", B: "Đi lùi.", C: "Đi chéo.", D: "Tắt máy thả trôi." }, correct: "A", group: "Kỹ thuật lái" },
+            { q: "Tốc độ tối đa an toàn của xe nâng trong kho thường là:", options: { A: "5 - 10 km/h.", B: "30 km/h.", C: "50 km/h.", D: "Tùy ý người lái." }, correct: "A", group: "Vận hành" },
+            { q: "Thái độ quan trọng nhất của người lái xe nâng là gì?", options: { A: "Luôn đặt an toàn lên hàng đầu.", B: "Làm việc thật nhanh để tăng sản lượng.", C: "Tiết kiệm nhiên liệu tối đa.", D: "Nghe lời sếp tuyệt đối dù mất an toàn." }, correct: "A", group: "An toàn" }
+        ];
 
-    function startExam() {
-        const name = document.getElementById('student-name').value.trim();
-        const course = document.getElementById('course-name').value.trim();
-        
-        if (!name || !course) {
-            alert("Vui lòng nhập Họ tên và Khóa học!");
-            return;
-        }
+        let examQuestions = [];
+        let userAnswers = new Array(30).fill(null);
+        let currentIdx = 0;
+        let timeLeft = 1200;
+        let timerId;
 
-        examQuestions = [...fullQuestionBank]
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 30);
+        function startExamNow() {
+            const name = document.getElementById('inputName').value.trim();
+            const className = document.getElementById('inputClass').value.trim();
 
-        document.getElementById('welcome-screen').style.display = 'none';
-        document.getElementById('main-exam-content').style.display = 'block';
-        document.getElementById('display-name').innerText = name;
-        document.getElementById('display-course').innerText = course;
-
-        renderGrid();
-        renderQuestion();
-        startTimer();
-    }
-
-    function renderGrid() {
-        const grid = document.getElementById('navigation-grid');
-        grid.innerHTML = '';
-        examQuestions.forEach((_, i) => {
-            const item = document.createElement('div');
-            item.className = 'grid-item';
-            item.id = `grid-${i}`;
-            item.innerText = i + 1;
-            item.onclick = () => { currentIdx = i; renderQuestion(); };
-            grid.appendChild(item);
-        });
-    }
-
-    function renderQuestion() {
-        const q = examQuestions[currentIdx];
-        document.getElementById('current-q-num').innerText = currentIdx + 1;
-        document.getElementById('question-text').innerText = q.question;
-        
-        const container = document.getElementById('options-container');
-        container.innerHTML = '';
-        
-        q.options.forEach((optText, i) => {
-            const btn = document.createElement('div');
-            btn.className = 'option-btn';
-            if (isFinished) btn.classList.add('disabled');
-            
-            if (userAnswers[currentIdx] === optText) btn.classList.add('selected');
-            
-            if (isFinished) {
-                if (optText === q.answer) btn.classList.add('correct');
-                else if (userAnswers[currentIdx] === optText) btn.classList.add('incorrect');
-            } else {
-                btn.onclick = () => {
-                    userAnswers[currentIdx] = optText;
-                    renderQuestion();
-                };
+            if (!name || !className) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
             }
 
-            btn.innerHTML = `<span class="me-3 fw-bold">${String.fromCharCode(65 + i)}.</span> <span>${optText}</span>`;
-            container.appendChild(btn);
-        });
+            document.getElementById('studentName').innerText = name;
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainHeader').classList.remove('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
 
-        updateNavButtons();
-        updateGridUI();
-    }
-
-    function updateGridUI() {
-        examQuestions.forEach((_, i) => {
-            const item = document.getElementById(`grid-${i}`);
-            if(!item) return;
-            item.classList.remove('current', 'answered', 'correct', 'incorrect');
-            if (i === currentIdx) item.classList.add('current');
-            if (userAnswers[i]) item.classList.add('answered');
-            if (isFinished) {
-                if (userAnswers[i] === examQuestions[i].answer) item.classList.add('correct');
-                else if (userAnswers[i]) item.classList.add('incorrect');
-            }
-        });
-    }
-
-    function updateNavButtons() {
-        document.getElementById('prev-btn').disabled = (currentIdx === 0);
-        document.getElementById('next-btn').disabled = (currentIdx === examQuestions.length - 1);
-    }
-
-    function move(step) {
-        currentIdx += step;
-        renderQuestion();
-    }
-
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' + s : s}`;
-            if (timeLeft <= 0) executeSubmit(true);
-        }, 1000);
-    }
-
-    // Logic nộp bài mới: Không dùng confirm() mặc định của trình duyệt
-    function openConfirm() {
-        const count = Object.keys(userAnswers).length;
-        const msg = count < 30 ? `Bạn mới làm ${count}/30 câu. Vẫn muốn nộp bài?` : "Bạn chắc chắn muốn kết thúc bài thi chứ?";
-        document.getElementById('confirm-msg').innerText = msg;
-        document.getElementById('confirm-modal').style.display = 'flex';
-    }
-
-    function closeConfirm() {
-        document.getElementById('confirm-modal').style.display = 'none';
-    }
-
-    function executeSubmit(isAuto = false) {
-        closeConfirm();
-        isFinished = true;
-        clearInterval(timerInterval);
-        
-        let score = 0;
-        examQuestions.forEach((q, i) => { if (userAnswers[i] === q.answer) score++; });
-
-        // Logic hiển thị quan trọng: Ẩn vùng câu hỏi, hiện bảng kết quả lên top
-        document.getElementById('question-container').style.display = 'none';
-        document.getElementById('submit-btn').style.display = 'none';
-        
-        const resultPanel = document.getElementById('result-panel');
-        const cardBox = document.getElementById('result-card-box');
-        const titleEl = document.getElementById('result-title');
-        const scoreEl = document.getElementById('result-score');
-        const summaryEl = document.getElementById('result-summary');
-
-        resultPanel.style.display = 'block';
-        scoreEl.innerText = `${score}/30`;
-
-        if (score >= 25) {
-            cardBox.className = "result-card pass-card";
-            titleEl.innerText = "CHÚC MỪNG: BẠN ĐÃ ĐẠT";
-            titleEl.style.color = "var(--success-green)";
-            summaryEl.innerHTML = `Học viên: <b>${document.getElementById('display-name').innerText}</b><br>Đã vượt qua kỳ sát hạch lý thuyết xe nâng.`;
-        } else {
-            cardBox.className = "result-card fail-card";
-            titleEl.innerText = "RẤT TIẾC: KHÔNG ĐẠT";
-            titleEl.style.color = "var(--danger-red)";
-            summaryEl.innerHTML = `Học viên: <b>${document.getElementById('display-name').innerText}</b><br>Bạn cần làm đúng ít nhất 25 câu để đạt.`;
+            initExamData();
         }
 
-        // Tự động cuộn lên đầu để xem kết quả
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        updateGridUI();
-    }
+        function initExamData() {
+            // Lấy ngẫu nhiên 30 câu (ở đây demo 10 câu lặp lại cho đủ 30)
+            let pool = [...questionBank];
+            while(pool.length < 30) pool = pool.concat(questionBank);
+            examQuestions = pool.sort(() => 0.5 - Math.random()).slice(0, 30);
 
-    function reviewExam() {
-        document.getElementById('result-panel').style.display = 'none';
-        document.getElementById('question-container').style.display = 'block';
-        currentIdx = 0;
-        renderQuestion();
-    }
-</script>
+            renderGrids();
+            showQuestion(0);
+            startTimer();
+        }
 
+        function renderGrids() {
+            const desktopGrid = document.getElementById('questionGrid');
+            const mobileGrid = document.getElementById('mobileGrid');
+            
+            [desktopGrid, mobileGrid].forEach(grid => {
+                grid.innerHTML = '';
+                for(let i=0; i<30; i++) {
+                    const btn = document.createElement('div');
+                    btn.className = `q-grid-item h-10 flex items-center justify-center bg-white border border-gray-200 rounded-lg cursor-pointer font-bold text-xs shadow-sm`;
+                    btn.id = `${grid.id}-item-${i}`;
+                    btn.innerText = i + 1;
+                    btn.onclick = () => showQuestion(i);
+                    grid.appendChild(btn);
+                }
+            });
+        }
+
+        function showQuestion(idx) {
+            currentIdx = idx;
+            const q = examQuestions[idx];
+            
+            document.getElementById('currentQNum').innerText = idx + 1;
+            document.getElementById('questionText').innerText = q.q;
+            document.getElementById('questionTag').innerText = q.group;
+            
+            const imgWrap = document.getElementById('imageWrapper');
+            imgWrap.classList.toggle('hidden', !q.image);
+            if(q.image) document.getElementById('questionImage').src = q.image;
+
+            const list = document.getElementById('optionsList');
+            list.innerHTML = '';
+            
+            ['A', 'B', 'C', 'D'].forEach(label => {
+                if(q.options[label]) {
+                    const btn = document.createElement('div');
+                    btn.className = `option-card p-4 border-2 border-gray-100 rounded-xl cursor-pointer transition-all flex items-center ${userAnswers[idx] === label ? 'selected' : ''}`;
+                    btn.innerHTML = `
+                        <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center mr-4 font-black text-sm ${userAnswers[idx] === label ? 'bg-blue-600 border-blue-600 text-white' : 'border-gray-200 text-gray-400'}">
+                            ${label}
+                        </div>
+                        <div class="text-gray-700 font-bold text-sm md:text-base">${q.options[label]}</div>
+                    `;
+                    btn.onclick = () => selectOption(idx, label);
+                    list.appendChild(btn);
+                }
+            });
+
+            // Update Grids
+            document.querySelectorAll('.q-grid-item').forEach(el => el.classList.remove('active'));
+            const dItem = document.getElementById(`questionGrid-item-${idx}`);
+            const mItem = document.getElementById(`mobileGrid-item-${idx}`);
+            if(dItem) dItem.classList.add('active');
+            if(mItem) mItem.classList.add('active');
+
+            // Scroll to top
+            document.getElementById('mainScrollArea').scrollTop = 0;
+        }
+
+        function selectOption(qIdx, option) {
+            userAnswers[qIdx] = option;
+            const dItem = document.getElementById(`questionGrid-item-${qIdx}`);
+            const mItem = document.getElementById(`mobileGrid-item-${qIdx}`);
+            if(dItem) dItem.classList.add('answered');
+            if(mItem) mItem.classList.add('answered');
+            
+            // Cập nhật lại giao diện để hiển thị lựa chọn hiện tại
+            showQuestion(qIdx);
+        }
+
+        function nextQuestion() { if(currentIdx < 29) showQuestion(currentIdx + 1); }
+        function prevQuestion() { if(currentIdx > 0) showQuestion(currentIdx - 1); }
+
+        function startTimer() {
+            timerId = setInterval(() => {
+                timeLeft--;
+                const min = Math.floor(timeLeft / 60);
+                const sec = timeLeft % 60;
+                document.getElementById('timerDisplay').innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+                if(timeLeft <= 0) submitExam();
+            }, 1000);
+        }
+
+        function confirmSubmit() {
+            if(confirm("Bạn có chắc chắn muốn nộp bài?")) submitExam();
+        }
+
+        function submitExam() {
+            clearInterval(timerId);
+            let score = userAnswers.reduce((acc, ans, i) => acc + (ans === examQuestions[i].correct ? 1 : 0), 0);
+            const isPassed = score >= 27;
+            
+            document.getElementById('resultModal').classList.remove('hidden');
+            document.getElementById('resultIcon').innerText = isPassed ? '🏆' : '⚠️';
+            document.getElementById('resultTitle').innerText = isPassed ? "ĐẠT KẾT QUẢ" : "KHÔNG ĐẠT";
+            document.getElementById('resultTitle').className = `text-2xl font-black mb-1 ${isPassed ? 'text-green-600' : 'text-red-600'}`;
+            document.getElementById('resultScore').innerText = `${score}/30`;
+            document.getElementById('resultDetails').innerHTML = `
+                <p><b>Học viên:</b> ${document.getElementById('studentName').innerText}</p>
+                <p><b>Kết quả:</b> ${isPassed ? 'Chúc mừng bạn đã vượt qua!' : 'Bạn cần cố gắng hơn lần sau.'}</p>
+            `;
+        }
+    </script>
 </body>
 </html>

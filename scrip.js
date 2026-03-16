@@ -26,7 +26,7 @@ async function submitQuiz() {
 
     try {
         // Cấu hình fetch chuẩn để gửi dữ liệu cho Google Script
-        await fetch(WEB_APP_URL, {
+        await fetch(https://script.google.com/macros/s/AKfycbxSZgEC-oNqO513UvYv_3bvQWkjtMELucG3JWBevyWtcwJoDn6VbH-271TOk42X5oGL/exec, {
             method: "POST",
             mode: "no-cors", // Thêm dòng này để tránh lỗi chặn gửi dữ liệu
             headers: {

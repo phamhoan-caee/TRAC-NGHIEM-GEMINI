@@ -1,9 +1,11 @@
-// 1. Cấu hình - Thay link Web App của thầy vào đây
+// 1. Cấu hình - Giữ nguyên link của thầy
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwxGySySYeE0wsg-41K5lTQUYgL_beTxmCGagDfwQO1AUxLs_l8K4iGMgz-jKE9sxc/exec";
 
 let allQuestions = [];
 let selectedQuestions = [];
-let timeLeft = 1200; // 20 phút (1200 giây)
+let userAnswers = {}; // Lưu trữ đáp án học viên đã chọn
+let currentQuestionIndex = 0; // Chỉ mục câu hỏi hiện tại
+let timeLeft = 1200; 
 let timerInterval;
 
 // 2. Hàm bắt đầu thi
@@ -16,96 +18,120 @@ async function startQuiz() {
         return;
     }
 
-    // Hiệu ứng chờ tải dữ liệu
     document.getElementById('start-screen').innerHTML = `
         <div class="card-body text-center">
             <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">Đang lấy đề thi từ hệ thống CAEE...</p>
+            <p class="mt-2">Đang tải đề thi từ CAEE...</p>
         </div>`;
 
     try {
         const response = await fetch(WEB_APP_URL);
         allQuestions = await response.json();
-
-        // Lấy 30 câu ngẫu nhiên từ ngân hàng câu hỏi của thầy
         selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 30);
 
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('quiz-screen').style.display = 'block';
 
-        renderQuestions();
+        showQuestion(0); // Hiển thị câu đầu tiên
         startTimer();
     } catch (error) {
-        alert("Lỗi kết nối! Thầy kiểm tra lại link Web App hoặc quyền chia sẻ của Sheets nhé.");
+        alert("Lỗi kết nối hệ thống!");
         location.reload();
     }
 }
 
-// 3. Hàm hiển thị câu hỏi (Tương thích với bảng DeThi của thầy)
-function renderQuestions() {
+// 3. Hàm hiển thị câu hỏi (Chỉ hiện 1 câu và có nút bấm)
+function showQuestion(index) {
+    currentQuestionIndex = index;
+    const q = selectedQuestions[index];
     const container = document.getElementById('quiz-content');
-    let html = "";
+    
+    const imageHtml = q["HINHANH"] ? `<div class="text-center mb-3"><img src="${q["HINHANH"]}" class="img-fluid rounded border shadow-sm" style="max-height:250px;"></div>` : "";
+    
+    // Kiểm tra xem học viên đã chọn đáp án cho câu này chưa để hiển thị lại
+    const isSelected = (opt) => userAnswers[index] === opt ? "checked" : "";
 
-    selectedQuestions.forEach((q, i) => {
-        // Kiểm tra xem câu hỏi có ảnh không (cột HINHANH)
-        const imageHtml = q["HINHANH"] ? `<img src="${q["HINHANH"]}" class="img-fluid rounded border mb-3 shadow-sm" style="max-height:300px;">` : "";
-        
-        html += `
-            <div class="question-box shadow-sm mb-4 p-3 bg-white rounded">
-                <h5 class="text-dark">Câu ${i + 1}: ${q["Nội dung câu hỏi"]}</h5>
-                ${imageHtml}
-                <div class="options-group mt-3">
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="q${i}" id="q${i}a" value="A">
-                        <label class="form-check-label w-100" for="q${i}a">A. ${q["Đáp án A"]}</label>
+    container.innerHTML = `
+        <div class="question-page p-3 bg-white rounded shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-primary px-3 py-2">Câu hỏi ${index + 1} / 30</span>
+                <span class="text-muted small">Mã đề: CAEE-2026</span>
+            </div>
+            
+            <h5 class="mb-4 text-dark font-weight-bold">${q["Nội dung câu hỏi"]}</h5>
+            ${imageHtml}
+            
+            <div class="options-list mt-3">
+                ${['A', 'B', 'C', 'D'].map(opt => `
+                    <div class="form-check mb-3 p-2 border rounded hover-shadow">
+                        <input class="form-check-input ms-1" type="radio" name="quizOption" id="opt${opt}" value="${opt}" 
+                            ${isSelected(opt)} onchange="saveAnswer(${index}, '${opt}')">
+                        <label class="form-check-label w-100 ps-4" for="opt${opt}">
+                            <strong>${opt}.</strong> ${q["Đáp án " + opt]}
+                        </label>
                     </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="q${i}" id="q${i}b" value="B">
-                        <label class="form-check-label w-100" for="q${i}b">B. ${q["Đáp án B"]}</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="q${i}" id="q${i}c" value="C">
-                        <label class="form-check-label w-100" for="q${i}c">C. ${q["Đáp án C"]}</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="q${i}" id="q${i}d" value="D">
-                        <label class="form-check-label w-100" for="q${i}d">D. ${q["Đáp án D"]}</label>
-                    </div>
-                </div>
-            </div>`;
-    });
-    container.innerHTML = html;
+                `).join('')}
+            </div>
+
+            <div class="navigation-btns d-flex justify-content-between mt-5">
+                <button class="btn btn-outline-secondary px-4" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>
+                    <i class="fas fa-arrow-left mr-1"></i> Câu trước
+                </button>
+                
+                ${index === 29 ? 
+                    `<button class="btn btn-success px-4" onclick="confirmSubmit()">Kết thúc & Nộp bài</button>` : 
+                    `<button class="btn btn-primary px-4" onclick="nextQuestion()">Câu tiếp theo <i class="fas fa-arrow-right ml-1"></i></button>`
+                }
+            </div>
+        </div>
+    `;
 }
 
-// 4. Đồng hồ đếm ngược
+// 4. Hàm lưu đáp án (CHỈ lưu dữ liệu, KHÔNG tự nhảy câu)
+function saveAnswer(index, value) {
+    userAnswers[index] = value;
+    console.log("Đã chọn câu " + (index + 1) + ": " + value);
+    // Ở đây máy sẽ đứng yên để học viên có thể đọc lại hoặc đổi ý.
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < 29) {
+        showQuestion(currentQuestionIndex + 1);
+    }
+}
+
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        showQuestion(currentQuestionIndex - 1);
+    }
+}
+
+// 5. Các hàm bổ trợ (Timer, Submit)
 function startTimer() {
     timerInterval = setInterval(() => {
         timeLeft--;
         let min = Math.floor(timeLeft / 60);
         let sec = timeLeft % 60;
         document.getElementById('timer').innerText = `Thời gian còn lại: ${min}:${sec < 10 ? '0' : ''}${sec}`;
-        
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert("Hết giờ làm bài! Hệ thống sẽ tự động nộp.");
-            submitQuiz();
-        }
+        if (timeLeft <= 0) submitQuiz();
     }, 1000);
 }
 
-// 5. Chấm điểm và gửi kết quả về Sheets
+function confirmSubmit() {
+    let unanswerCount = 30 - Object.keys(userAnswers).length;
+    let msg = unanswerCount > 0 ? `Bạn còn ${unanswerCount} câu chưa làm. Vẫn nộp bài chứ?` : "Bạn có chắc chắn muốn nộp bài?";
+    if (confirm(msg)) submitQuiz();
+}
+
 async function submitQuiz() {
     clearInterval(timerInterval);
     let score = 0;
 
     selectedQuestions.forEach((q, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (selected && selected.value === q["Đáp án đúng"]) {
-            score++;
-        }
+        if (userAnswers[i] === q["Đáp án đúng"]) score++;
     });
 
-    const status = score >= 24 ? "ĐẠT" : "KHÔNG ĐẠT"; // 24/30 câu là Đạt
+    const status = score >= 24 ? "ĐẠT" : "KHÔNG ĐẠT";
     const payload = {
         name: document.getElementById('studentName').value,
         id: document.getElementById('studentID').value,
@@ -113,23 +139,13 @@ async function submitQuiz() {
         status: status
     };
 
-    // Hiệu ứng đang nộp bài
-    document.getElementById('quiz-screen').innerHTML = `
-        <div class="text-center p-5">
-            <div class="spinner-grow text-success" role="status"></div>
-            <h3>Đang lưu kết quả của thầy...</h3>
-        </div>`;
+    document.getElementById('quiz-screen').innerHTML = `<div class="text-center p-5"><h4>Đang lưu điểm của thầy...</h4></div>`;
 
     try {
-        await fetch(WEB_APP_URL, {
-            method: "POST",
-            body: JSON.stringify(payload)
-        });
-        
-        alert(`Chúc mừng! Bạn đúng ${score}/30 câu. Kết quả: ${status}`);
+        await fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) });
+        alert(`Kết quả: ${score}/30 câu - ${status}`);
     } catch (e) {
-        alert("Lưu điểm gặp lỗi, nhưng thầy đừng lo, hãy chụp màn hình kết quả này!");
+        alert("Lỗi mạng, hãy chụp màn hình kết quả!");
     }
-
-    location.reload(); // Quay lại màn hình bắt đầu
+    location.reload();
 }

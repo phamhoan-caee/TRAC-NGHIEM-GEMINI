@@ -275,14 +275,23 @@
             document.getElementById('mainScrollArea').scrollTop = 0;
         }
 
-        function selectOption(qIdx, option) {
-            userAnswers[qIdx] = option;
-            const items = [document.getElementById(`questionGrid-item-${qIdx}`), document.getElementById(`mobileGrid-item-${qIdx}`)];
-            items.forEach(it => it && it.classList.add('answered'));
-            
-            // QUAN TRỌNG: Chỉ cập nhật giao diện, không nhảy câu
-            showQuestion(qIdx); 
-        }
+       function selectOption(qIdx, option) {
+
+    userAnswers[qIdx] = option;
+
+    const items = [
+        document.getElementById(`questionGrid-item-${qIdx}`),
+        document.getElementById(`mobileGrid-item-${qIdx}`)
+    ];
+
+    items.forEach(it => it && it.classList.add('answered'));
+
+    // CHỈ cập nhật style, KHÔNG render lại câu
+    const optionCards = document.querySelectorAll('.option-card');
+    optionCards.forEach(card => card.classList.remove('selected'));
+
+    event.currentTarget.classList.add('selected');
+}
 
         function nextQuestion() { if(currentIdx < 29) showQuestion(currentIdx + 1); }
         function prevQuestion() { if(currentIdx > 0) showQuestion(currentIdx - 1); }

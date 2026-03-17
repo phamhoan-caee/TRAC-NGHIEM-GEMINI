@@ -8,7 +8,7 @@ let timerInterval;
 
 // 2. Hàm bắt đầu thi
 async function startQuiz() {
-    const name = document.getElementById('studentName').value.trim();
+    const name = document.getElementById('inputName').value.trim();
     const id = document.getElementById('studentID').value.trim();
 
     if (!name || !id) {

@@ -201,7 +201,7 @@ async function submitQuiz() {
        score: score, // Gửi số điểm gốc để bên Sheet dễ xử lý
        status: status
    };
-
+ 
    // Dùng định dạng này để Google Script nhận được JSON
    fetch(scriptURL, {
        method: 'POST',
